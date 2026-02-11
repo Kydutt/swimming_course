@@ -1,18 +1,6 @@
 <?php
-// ===================================================
-// Database Connection & CRUD Functions
-// swimming_course database
-// ===================================================
 
-$conn = new mysqli("localhost", "root", "", "swimming_course");
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-// Set charset to UTF8
-$conn->set_charset("utf8mb4");
-
+include 'config/database.php';
 // ============= Helper Functions =============
 
 // Function to sanitize input

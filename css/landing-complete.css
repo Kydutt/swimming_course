@@ -984,3 +984,209 @@ section {
         flex-direction: column;
     }
 }
+
+/* ============= Login Page Styles ============= */
+.bg-primary {
+    background: var(--gradient-primary) !important;
+
+}
+
+#layoutAuthentication {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#layoutAuthentication_content {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+#layoutAuthentication_content .container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+#layoutAuthentication_content .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.col-lg-5 {
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (max-width: 992px) {
+    .col-lg-5 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+#layoutAuthentication_content .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: var(--white);
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.5rem;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.border-0 {
+    border: 0 !important;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+#layoutAuthentication_content .card-header {
+    padding: 1.5rem 1.25rem;
+    margin-bottom: 0;
+    background-color: var(--white);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+#layoutAuthentication_content .card-header h3 {
+    margin: 0;
+    font-size: 1.75rem;
+    display: block;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.font-weight-light {
+    font-weight: 300 !important;
+}
+
+.my-4 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+#layoutAuthentication_content .card-body {
+    flex: 1 1 auto;
+    padding: 1.5rem 1.25rem;
+}
+
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.form-grup {
+    margin-bottom: 1rem;
+}
+
+.form-grup label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+#layoutAuthentication_content .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: var(--white);
+    background-clip: padding-box;
+    border: 2px solid var(--gray-200);
+    border-radius: 0.35rem;
+    transition: var(--transition);
+}
+
+#layoutAuthentication_content .form-control:focus {
+    color: #495057;
+    background-color: var(--white);
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+#layoutAuthentication_content .btn-primary {
+    color: var(--white);
+    background: var(--gradient-primary);
+    border-color: var(--primary);
+}
+
+#layoutAuthentication_content .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Animations for login card */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#layoutAuthentication_content .card {
+    animation: fadeIn 0.5s ease;
+}

@@ -1,8 +1,3 @@
-// ===================================================
-// AquaLearn - Complete Landing Page JavaScript
-// Form Validation, Smooth Scroll, Notifications
-// ===================================================
-
 // ============= Navigation Scroll Effect =============
 const navbar = document.getElementById('navbar');
 const navLinks = document.querySelectorAll('.nav-link');

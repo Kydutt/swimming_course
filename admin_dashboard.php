@@ -3,6 +3,18 @@
 // Admin Dashboard - View All Registrations (READ)
 // ===================================================
 
+session_start();
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// Get admin info from session
+$admin_name = $_SESSION['admin_name'] ?? 'Admin';
+$admin_email = $_SESSION['admin_email'] ?? '';
+
 require_once 'function.php';
 
 // Get all registrations
@@ -229,8 +241,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 </head>
 <body>
     <div class="header">
-        <h1>🏊 Admin Dashboard - Swimming Course</h1>
-        <p>Kelola data pendaftaran peserta kursus renang</p>
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1> Admin Dashboard - Swimming Course</h1>
+                <p>Kelola data pendaftaran peserta kursus renang</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                    👤 <strong><?php echo htmlspecialchars($admin_name); ?></strong><br>
+                    <span style="font-size: 0.8rem; opacity: 0.9;"><?php echo htmlspecialchars($admin_email); ?></span>
+                </p>
+                <a href="logout.php" class="btn" style="background: #ef4444; color: white; padding: 0.5rem 1rem; font-size: 0.9rem; display: inline-block; margin-top: 0.5rem;">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
