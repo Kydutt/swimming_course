@@ -152,8 +152,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li><a href="#about" class="nav-link">Tentang Kami</a></li>
                     <li><a href="#programs" class="nav-link">Program</a></li>
                     <li><a href="#facilities" class="nav-link">Fasilitas</a></li>
-                    <li><a href="#testimonials" class="nav-link">Testimoni</a></li>
-                    <li><a href="#registration" class="nav-link nav-cta">Daftar Sekarang</a></li>
+                    
+                    <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true): ?>
+                        <li><span class="nav-link">Hai, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span></li>
+                        <li><a href="logout.php" class="nav-link nav-cta" style="background: #ef4444;">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php" class="nav-link">Login</a></li>
+                        <li><a href="register.php" class="nav-link nav-cta">Daftar Sekarang</a></li>
+                    <?php endif; ?>
                 </ul>
                 <button class="mobile-toggle" id="mobileToggle">
                     <span></span>
@@ -543,7 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="registration" id="registration">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Daftar <span class="highlight">Sekarang</span></h2>
+                <h2 class="section-title">Daftar <span class="highlight">Kelas Renang</span></h2>
                 <p class="section-subtitle">Isi formulir di bawah untuk mendaftar program les renang</p>
             </div>
             <div class="registration-wrapper">
@@ -568,7 +574,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="full_name" 
                                 class="form-input"
                                 placeholder="Masukkan nama lengkap"
-                                value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : ''; ?>"
+                                value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : (isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''); ?>"
                                 required
                             >
                         </div>
@@ -728,12 +734,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top"></button>
     
-    <!-- // sistem role
-    switch ($role) {
-        case 'admin' :
-            return redirect()->route('admin_dashboard.php');
-        case 'user' :
-            return redirect()->route('index.php');
-    } -->
 </body>
 </html>

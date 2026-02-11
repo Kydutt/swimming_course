@@ -6,14 +6,14 @@
 session_start();
 
 // Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
 }
 
 // Get admin info from session
-$admin_name = $_SESSION['admin_name'] ?? 'Admin';
-$admin_email = $_SESSION['admin_email'] ?? '';
+$admin_name = $_SESSION['user_name'] ?? 'Admin';
+$admin_email = $_SESSION['user_email'] ?? '';
 
 require_once 'function.php';
 
@@ -248,11 +248,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             </div>
             <div style="text-align: right;">
                 <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
-                    👤 <strong><?php echo htmlspecialchars($admin_name); ?></strong><br>
+                     <strong><?php echo htmlspecialchars($admin_name); ?></strong><br>
                     <span style="font-size: 0.8rem; opacity: 0.9;"><?php echo htmlspecialchars($admin_email); ?></span>
                 </p>
                 <a href="logout.php" class="btn" style="background: #ef4444; color: white; padding: 0.5rem 1rem; font-size: 0.9rem; display: inline-block; margin-top: 0.5rem;">
-                    🚪 Logout
+                     Logout
                 </a>
             </div>
         </div>

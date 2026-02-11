@@ -26,20 +26,23 @@ CREATE TABLE IF NOT EXISTS registrations (
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Table for admin users (if needed)
-CREATE TABLE IF NOT EXISTS admin (
+-- Table for users (both admin and regular users)
+CREATE TABLE IF NOT EXISTS user (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_email (email),
+    INDEX idx_role (role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert default admin user (password: admin123)
--- Note: In production, use proper password hashing
-INSERT INTO admin (email, password, name) VALUES 
-('admin@aqualear.id', MD5('admin123'), 'Administrator')
+-- Insert default admin user (email: admin@swimming.com, password: admin123)
+-- Password is hashed using bcrypt
+INSERT INTO user (name, email, password, role) VALUES 
+('Administrator', 'admin@swimming.com', '$2y$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5eoWb.hlO7T8u', 'admin')
 ON DUPLICATE KEY UPDATE email=email;
 
 -- Sample data untuk testing (optional)

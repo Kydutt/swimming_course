@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <div class="header">
-            <h1>✏️ Edit Pendaftaran</h1>
+            <h1> Edit Pendaftaran</h1>
             <p>Update data pendaftaran peserta</p>
         </div>
 
@@ -285,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="actions">
-                    <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary"> Simpan Perubahan</button>
                     <a href="admin_dashboard.php" class="btn btn-secondary">← Kembali</a>
                 </div>
             </form>
