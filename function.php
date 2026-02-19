@@ -1,10 +1,10 @@
 <?php
 
 include 'config/database.php';
-// ============= Helper Functions =============
+// ============= Fungsi-Fungsi Pembantu =============
 
-// Function to sanitize input
-function sanitize_input($data) {
+// Fungsi untuk membersihkan input
+function bersihkan_input($data) {
     global $conn;
     $data = trim($data);
     $data = stripslashes($data);
@@ -13,34 +13,34 @@ function sanitize_input($data) {
     return $data;
 }
 
-// Function to get all registrations
-function get_all_registrations() {
+// Fungsi untuk mengambil semua pendaftaran
+function ambil_semua_pendaftaran() {
     global $conn;
     $sql = "SELECT * FROM registrations ORDER BY created_at DESC";
     $result = $conn->query($sql);
     return $result;
 }
 
-// Function to get registration by ID
-function get_registration_by_id($id) {
+// Fungsi untuk mengambil pendaftaran berdasarkan ID
+function ambil_pendaftaran_by_id($id) {
     global $conn;
-    $id = sanitize_input($id);
+    $id = bersihkan_input($id);
     $sql = "SELECT * FROM registrations WHERE id = '$id'";
     $result = $conn->query($sql);
     return $result->fetch_assoc();
 }
 
-// Function to insert new registration
-function insert_registration($data) {
+// Fungsi untuk menyimpan pendaftaran baru
+function simpan_pendaftaran($data) {
     global $conn;
     
-    $full_name = sanitize_input($data['full_name']);
-    $age = sanitize_input($data['age']);
-    $gender = sanitize_input($data['gender']);
-    $whatsapp = sanitize_input($data['whatsapp']);
-    $address = sanitize_input($data['address']);
-    $program = sanitize_input($data['program']);
-    $schedule = sanitize_input($data['schedule']);
+    $full_name = bersihkan_input($data['full_name']);
+    $age       = bersihkan_input($data['age']);
+    $gender    = bersihkan_input($data['gender']);
+    $whatsapp  = bersihkan_input($data['whatsapp']);
+    $address   = bersihkan_input($data['address']);
+    $program   = bersihkan_input($data['program']);
+    $schedule  = bersihkan_input($data['schedule']);
     
     $sql = "INSERT INTO registrations (full_name, age, gender, whatsapp, address, program, schedule) 
             VALUES ('$full_name', '$age', '$gender', '$whatsapp', '$address', '$program', '$schedule')";
@@ -51,20 +51,20 @@ function insert_registration($data) {
     return false;
 }
 
-// Function to update registration
-function update_registration($id, $data) {
+// Fungsi untuk memperbarui pendaftaran
+function perbarui_pendaftaran($id, $data) {
     global $conn;
     
-    $id = sanitize_input($id);
-    $full_name = sanitize_input($data['full_name']);
-    $age = sanitize_input($data['age']);
-    $gender = sanitize_input($data['gender']);
-    $whatsapp = sanitize_input($data['whatsapp']);
-    $address = sanitize_input($data['address']);
-    $program = sanitize_input($data['program']);
-    $schedule = sanitize_input($data['schedule']);
-    $status = isset($data['status']) ? sanitize_input($data['status']) : 'Pending';
-    $notes = isset($data['notes']) ? sanitize_input($data['notes']) : '';
+    $id        = bersihkan_input($id);
+    $full_name = bersihkan_input($data['full_name']);
+    $age       = bersihkan_input($data['age']);
+    $gender    = bersihkan_input($data['gender']);
+    $whatsapp  = bersihkan_input($data['whatsapp']);
+    $address   = bersihkan_input($data['address']);
+    $program   = bersihkan_input($data['program']);
+    $schedule  = bersihkan_input($data['schedule']);
+    $status    = isset($data['status']) ? bersihkan_input($data['status']) : 'Pending';
+    $notes     = isset($data['notes']) ? bersihkan_input($data['notes']) : '';
     
     $sql = "UPDATE registrations SET 
             full_name = '$full_name',
@@ -81,47 +81,47 @@ function update_registration($id, $data) {
     return $conn->query($sql);
 }
 
-// Function to delete registration
-function delete_registration($id) {
+// Fungsi untuk menghapus pendaftaran
+function hapus_pendaftaran($id) {
     global $conn;
-    $id = sanitize_input($id);
+    $id = bersihkan_input($id);
     $sql = "DELETE FROM registrations WHERE id = '$id'";
     return $conn->query($sql);
 }
 
-// Function to get registration count by status
-function get_registration_count_by_status($status) {
+// Fungsi untuk menghitung pendaftaran berdasarkan status
+function hitung_pendaftaran_by_status($status) {
     global $conn;
-    $status = sanitize_input($status);
-    $sql = "SELECT COUNT(*) as count FROM registrations WHERE status = '$status'";
+    $status = bersihkan_input($status);
+    $sql = "SELECT COUNT(*) as jumlah FROM registrations WHERE status = '$status'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    return $row['count'];
+    return $row['jumlah'];
 }
 
-// Function to get registration statistics
-function get_registration_stats() {
+// Fungsi untuk mengambil statistik pendaftaran
+function ambil_statistik_pendaftaran() {
     global $conn;
-    $stats = array();
+    $statistik = array();
     
-    // Total registrations
+    // Total pendaftaran
     $sql = "SELECT COUNT(*) as total FROM registrations";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    $stats['total'] = $row['total'];
+    $statistik['total'] = $row['total'];
     
-    // Pending
-    $stats['pending'] = get_registration_count_by_status('Pending');
+    // Menunggu
+    $statistik['pending']   = hitung_pendaftaran_by_status('Pending');
     
-    // Approved
-    $stats['approved'] = get_registration_count_by_status('Approved');
+    // Disetujui
+    $statistik['approved']  = hitung_pendaftaran_by_status('Approved');
     
-    // Rejected
-    $stats['rejected'] = get_registration_count_by_status('Rejected');
+    // Ditolak
+    $statistik['rejected']  = hitung_pendaftaran_by_status('Rejected');
     
-    // Completed
-    $stats['completed'] = get_registration_count_by_status('Completed');
+    // Selesai
+    $statistik['completed'] = hitung_pendaftaran_by_status('Completed');
     
-    return $stats;
+    return $statistik;
 }
 ?>

@@ -76,6 +76,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - Swimming Course</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <div class="login-container">
@@ -119,7 +120,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
                             id="password" 
                             name="password" 
                             class="form-input" 
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="********"
                             required
                             autocomplete="current-password"
                         >

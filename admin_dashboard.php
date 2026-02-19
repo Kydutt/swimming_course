@@ -13,14 +13,14 @@ $admin_email = $_SESSION['user_email'] ?? '';
 
 require_once 'function.php';
 
-// Get all registrations
-$registrations = get_all_registrations();
-$stats = get_registration_stats();
+// Ambil semua pendaftaran
+$pendaftaran = ambil_semua_pendaftaran();
+$statistik = ambil_statistik_pendaftaran();
 
 // Handle delete action
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $delete_id = $_GET['id'];
-    if (delete_registration($delete_id)) {
+    if (hapus_pendaftaran($delete_id)) {
         header('Location: admin_dashboard.php?success=deleted');
         exit;
     }
@@ -69,23 +69,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number"><?php echo $stats['total']; ?></div>
+                <div class="stat-number"><?php echo $statistik['total']; ?></div>
                 <div class="stat-label">Total Pendaftaran</div>
             </div>
             <div class="stat-card pending">
-                <div class="stat-number"><?php echo $stats['pending']; ?></div>
+                <div class="stat-number"><?php echo $statistik['pending']; ?></div>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card approved">
-                <div class="stat-number"><?php echo $stats['approved']; ?></div>
+                <div class="stat-number"><?php echo $statistik['approved']; ?></div>
                 <div class="stat-label">Disetujui</div>
             </div>
             <div class="stat-card rejected">
-                <div class="stat-number"><?php echo $stats['rejected']; ?></div>
+                <div class="stat-number"><?php echo $statistik['rejected']; ?></div>
                 <div class="stat-label">Ditolak</div>
             </div>
             <div class="stat-card completed">
-                <div class="stat-number"><?php echo $stats['completed']; ?></div>
+                <div class="stat-number"><?php echo $statistik['completed']; ?></div>
                 <div class="stat-label">Selesai</div>
             </div>
         </div>
@@ -98,7 +98,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             </div>
             
             <div class="table-container">
-                <?php if ($registrations && $registrations->num_rows > 0): ?>
+                <?php if ($pendaftaran && $pendaftaran->num_rows > 0): ?>
                     <table>
                         <thead>
                             <tr>
@@ -115,7 +115,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row = $registrations->fetch_assoc()): ?>
+                            <?php while ($baris = $pendaftaran->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo $row['id']; ?></td>
                                     <td><strong><?php echo htmlspecialchars($row['full_name']); ?></strong></td>
@@ -129,7 +129,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
                                             <?php echo $row['status']; ?>
                                         </span>
                                     </td>
-                                    <td><?php echo date('d/m/Y H:i', strtotime($row['created_at'])); ?></td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($baris['created_at'])); ?></td>
                                     <td>
                                         <div class="actions">
                                             <a href="edit_registration.php?id=<?php echo $row['id']; ?>" 

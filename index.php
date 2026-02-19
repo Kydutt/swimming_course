@@ -1,8 +1,8 @@
 ﻿<?php
-// Start session for messages
+// Start session for authentication
 session_start();
 
-// Include database connection
+// Include database connection and functions
 require_once 'function.php';
 
 // Initialize variables
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'schedule' => $schedule
         ];
         
-        $insert_id = insert_registration($registration_data);
+        $insert_id = simpan_pendaftaran($registration_data);
         
         if ($insert_id) {
             // Success - Create WhatsApp payment message with dynamic pricing
@@ -70,21 +70,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Program price mapping
             $program_prices = [
-                'Kelas Anak-anak' => [
-                    'price' => 600000,
-                    'unit' => 'bulan'
+                'Kelas Pemula' => [
+                    'price' => 160000,
+                    'unit' => '8x pertemuan'
                 ],
-                'Kelas Remaja' => [
-                    'price' => 800000,
-                    'unit' => 'bulan'
+                'Kelas Recovery' => [
+                    'price' => 200000,
+                    'unit' => '8x pertemuan'
                 ],
-                'Kelas Dewasa' => [
-                    'price' => 750000,
-                    'unit' => 'bulan'
-                ],
-                'Kelas Privat' => [
-                    'price' => 250000,
-                    'unit' => 'sesi'
+                'Kelas Profesional' => [
+                    'price' => 350000,
+                    'unit' => '8x pertemuan'
                 ]
             ];
             
@@ -110,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message .= "Biaya Program: " . $price_formatted . "/" . $selected_price['unit'] . "\n";
             $message .= "Total Biaya: " . $price_formatted . "\n";
             $message .= "Mohon informasi rekening untuk transfer pembayaran.\n\n";
-            $message .= "Terima kasih! ";
+            $message .= "Terima kasih!";
             
             // Encode message for URL
             $encoded_message = urlencode($message);
@@ -132,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swimming Course</title>
-    <meta name="description" content="Lembaga kursus renang terpercaya dengan pelatih profesional. Program les renang untuk anak, remaja, dan dewasa. Daftar sekarang!">
+    <title>SwimPro - Kursus Renang Profesional</title>
+    <meta name="description" content="Belajar renang lebih mudah dan profesional bersama SwimPro. Instruktur berpengalaman, jadwal fleksibel, dan metode pembelajaran modern.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -145,13 +141,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#home" class="logo">
-                    <span class="logo-text">swimming Course</span>
+                    <span class="logo-text">Swimming Course</span>
                 </a>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link">Beranda</a></li>
-                    <li><a href="#about" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="#programs" class="nav-link">Program</a></li>
-                    <li><a href="#facilities" class="nav-link">Fasilitas</a></li>
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#registration" class="nav-link">Contact</a></li>
                     
                     <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true): ?>
                         <li><span class="nav-link">Hai, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span></li>
@@ -172,92 +167,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-bg"></div>
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Kuasai Seni Berenang Bersama <span class="highlight">Pelatih Profesional</span>
-                </h1>
-                <p class="hero-description">
-                    Bergabunglah dengan ribuan peserta yang telah meningkatkan kemampuan renang mereka. 
-                    Program khusus untuk anak-anak, remaja, dan dewasa dengan fasilitas kolam renang standar internasional.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#registration" class="btn btn-primary">Daftar Sekarang</a>
-                    <a href="#programs" class="btn btn-secondary">Lihat Program</a>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Belajar Renang Lebih <span class="highlight">Mudah</span> dan Profesional
+                    </h1>
+                    <p class="hero-description">
+                        Kuasai teknik renang bersama instruktur berpengalaman. Fasilitas modern, jadwal fleksibel, dan metode pembelajaran yang terbukti efektif untuk semua usia.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#registration" class="btn btn-primary">Mulai Sekarang</a>
+                        <a href="#programs" class="btn btn-secondary">Lihat Program</a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="trust-item">
+                            <span class="trust-icon">⭐</span>
+                            <span class="trust-text">4.9/5 Rating</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-icon">👥</span>
+                            <span class="trust-text">3000+ Peserta</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-stats">
-                    <div class="stat-card">
-                        <div class="stat-number">3000+</div>
-                        <div class="stat-label">Peserta Aktif</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">20+</div>
-                        <div class="stat-label">Pelatih Bersertifikat</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">10 Tahun</div>
-                        <div class="stat-label">Pengalaman</div>
+                <div class="hero-image">
+                    <div class="image-placeholder">
+                        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop" alt="Swimming" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
+    <!-- Features Section -->
+    <section class="features" id="features">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Tentang <span class="highlight">Swimming Course</span></h2>
-                <p class="section-subtitle">Lembaga les renang terpercaya sejak 2015</p>
+                <h2 class="section-title">Mengapa Memilih SwimPro?</h2>
+                <p class="section-desc">Kami menyediakan layanan terbaik dengan fasilitas modern dan instruktur berpengalaman untuk memastikan Anda belajar renang dengan cara yang paling efektif.</p>
             </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Siapa Kami?</h3>
-                    <p>
-                        AquaLearn adalah lembaga kursus renang profesional yang telah berpengalaman lebih dari 10 tahun 
-                        dalam mengajarkan seni berenang kepada ribuan peserta dari berbagai usia. Kami berkomitmen untuk 
-                        memberikan pendidikan renang berkualitas dengan metode yang aman, efektif, dan menyenangkan.
-                    </p>
-                    
-                    <div class="vision-mission">
-                        <div class="vm-item">
-                            <h4> Visi</h4>
-                            <p>Menjadi lembaga kursus renang terdepan di Indonesia yang menghasilkan perenang berkualitas 
-                               dan berkarakter melalui program pelatihan yang terstruktur dan profesional.</p>
-                        </div>
-                        <div class="vm-item">
-                            <h4> Misi</h4>
-                            <ul>
-                                <li>Menyediakan program les renang berkualitas untuk semua usia</li>
-                                <li>Mengembangkan metode pelatihan yang inovatif dan efektif</li>
-                                <li>Membentuk perenang yang kompeten dan percaya diri</li>
-                                <li>Memberikan pelayanan terbaik dengan fasilitas standar internasional</li>
-                            </ul>
-                        </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
                     </div>
-
-                    <div class="advantages">
-                        <h4> Keunggulan Kami</h4>
-                        <div class="advantage-grid">
-                            <div class="advantage-item">
-                                <span class="advantage-icon"></span>
-                                <span>Pelatih Bersertifikat Internasional</span>
-                            </div>
-                            <div class="advantage-item">
-                                <span class="advantage-icon"></span>
-                                <span>Metode Pembelajaran Terstruktur</span>
-                            </div>
-                            <div class="advantage-item">
-                                <span class="advantage-icon"></span>
-                                <span>Prestasi di Kompetisi Nasional</span>
-                            </div>
-                            <div class="advantage-item">
-                                <span class="advantage-icon"></span>
-                                <span>Kelas Kecil (Max 6 Peserta)</span>
-                            </div>
-                        </div>
+                    <h3 class="feature-title">Pelatih Bersertifikat</h3>
+                    <p class="feature-desc">Kami memiliki tim pelatih profesional yang berpengalaman dan bersertifikat internasional untuk membimbing Anda.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
                     </div>
+                    <h3 class="feature-title">Jadwal Fleksibel</h3>
+                    <p class="feature-desc">Pilih jadwal yang sesuai dengan rutinitas Anda. Tersedia kelas pagi, siang, dan sore hari untuk kemudahan Anda.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Metode Terpercaya</h3>
+                    <p class="feature-desc">Menggunakan metode pembelajaran yang terbukti efektif dan aman untuk semua tingkat kemampuan.</p>
                 </div>
             </div>
         </div>
@@ -267,419 +251,215 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="programs" id="programs">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Program <span class="highlight">Les Renang</span></h2>
-                <p class="section-subtitle">Pilih program yang sesuai dengan kebutuhan Anda</p>
+                <h2 class="section-title">💰 Paket Program Renang</h2>
+                <p class="section-desc">Pilih paket yang sesuai dengan kebutuhan dan usia Anda. Semua paket dilengkapi dengan instruktur profesional dan fasilitas terbaik.</p>
             </div>
+            
             <div class="programs-grid">
-                <!-- Kelas Anak-anak -->
+                <!-- Kelas Pemula -->
                 <div class="program-card">
-                    <h3 class="program-title">Kelas Pemula</h3>
-                    <p class="program-age">Usia 4-15 tahun</p>
-                    <p class="program-description">
-                        Program khusus untuk anak-anak dengan fokus pada pengenalan air, teknik dasar renang, 
-                        dan pembentukan kepercayaan diri di dalam air.
-                    </p>
-                    <div class="program-details">
-                        <div class="detail-item">
-                            <strong>Jadwal:</strong>
-                            <span>Senin, Rabu, Jumat (15:00 - 16:00)</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Durasi:</strong>
-                            <span>120 menit per sesi</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Harga:</strong>
-                            <span class="price">Rp 160.000/8 Pertemuan</span>
-                        </div>
+                    <div class="program-header">
+                        <h3 class="program-name">Kelas Pemula</h3>
+                        <p class="program-age">Usia 4-15 tahun</p>
+                    </div>
+                    <div class="program-price">
+                        <span class="price-amount">Rp 160.000</span>
+                        <span class="price-period">/8x pertemuan</span>
                     </div>
                     <ul class="program-features">
-                        <li>  Pengenalan air dan adaptasi</li>
-                        <li>  Teknik pernapasan dasar</li>
-                        <li>  Gaya bebas dan gaya dada</li>
-                        <li>  Sertifikat kelulusan</li>
+                        <li>✓ Pengenalan air dan adaptasi</li>
+                        <li>✓ Teknik pernapasan dasar</li>
+                        <li>✓ Gaya bebas dan gaya dada</li>
+                        <li>✓ Sertifikat kelulusan</li>
+                        <li>✓ Jadwal: Senin, Rabu, Jumat</li>
                     </ul>
-                    <a href="#registration" class="btn btn-program">Daftar Program Ini</a>
+                    <a href="#registration" class="btn-program">Daftar Sekarang</a>
                 </div>
-
-                <!-- Kelas Remaja -->
-                <div class="program-card featured">
-                    <div class="badge">Populer</div>
-                    <div class="program-icon"></div>
-                    <h3 class="program-title">Kelas Remaja</h3>
-                    <p class="program-age">Usia 13-18 tahun</p>
-                    <p class="program-description">
-                        Program untuk remaja yang ingin meningkatkan teknik renang, kekuatan, dan kecepatan 
-                        dengan pelatihan yang lebih intensif.
-                    </p>
-                    <div class="program-details">
-                        <div class="detail-item">
-                            <strong> Jadwal:</strong>
-                            <span>Selasa, Kamis, Sabtu (16:00 - 17:30)</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Durasi:</strong>
-                            <span>90 menit per sesi</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Harga:</strong>
-                            <span class="price">Rp 800.000/bulan</span>
-                        </div>
+                
+                <!-- Kelas Recovery -->
+                <div class="program-card featured-program">
+                    <div class="program-badge">Populer</div>
+                    <div class="program-header">
+                        <h3 class="program-name">Kelas Recovery</h3>
+                        <p class="program-age">Semua Kalangan</p>
+                    </div>
+                    <div class="program-price">
+                        <span class="price-amount">Rp 200.000</span>
+                        <span class="price-period">/8x pertemuan</span>
                     </div>
                     <ul class="program-features">
-                        <li>  Penyempurnaan 4 gaya renang</li>
-                        <li>  Teknik start dan turn</li>
-                        <li>  Peningkatan stamina</li>
-                        <li>  Persiapan kompetisi</li>
+                        <li>✓ Pembelajaran dari dasar</li>
+                        <li>✓ Jadwal fleksibel</li>
+                        <li>✓ Teknik renang untuk fitness</li>
+                        <li>✓ Konsultasi pribadi</li>
+                        <li>✓ Jadwal: Senin-Sabtu</li>
                     </ul>
-                    <a href="#registration" class="btn btn-program">Daftar Program Ini</a>
+                    <a href="#registration" class="btn-program">Daftar Sekarang</a>
                 </div>
-
-                <!-- Kelas Dewasa -->
-                <div class="program-card">
-                    <div class="program-icon"></div>
-                    <h3 class="program-title">Kelas Recovery</h3>
-                    <p class="program-age">Semua Kalangan</p>
-                    <p class="program-description">
-                        Program untuk dewasa yang ingin belajar renang dari nol atau meningkatkan kemampuan 
-                        dengan pendekatan yang fleksibel.
-                    </p>
-                    <div class="program-details">
-                        <div class="detail-item">
-                            <strong> Jadwal:</strong>
-                            <span>Senin-Sabtu (06:00 - 07:00 / 18:00 - 19:00)</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Durasi:</strong>
-                            <span>120 menit per sesi</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Harga:</strong>
-                            <span class="price">Rp 750.000/bulan</span>
-                        </div>
+                
+                <!-- Kelas Profesional -->
+                <div class="program-card premium-program">
+                    <div class="program-badge premium-badge">Premium</div>
+                    <div class="program-header">
+                        <h3 class="program-name">Kelas Profesional</h3>
+                        <p class="program-age">Semua Usia</p>
+                    </div>
+                    <div class="program-price">
+                        <span class="price-amount">Rp 350.000</span>
+                        <span class="price-period">/8x pertemuan</span>
                     </div>
                     <ul class="program-features">
-                        <li>  Pembelajaran dari dasar</li>
-                        <li>  Jadwal fleksibel</li>
-                        <li>  Teknik renang untuk fitness</li>
-                        <li>  Konsultasi pribadi</li>
+                        <li>✓ Pembelajaran 1-on-1</li>
+                        <li>✓ Program disesuaikan kebutuhan</li>
+                        <li>✓ Progress tracking detail</li>
+                        <li>✓ Prioritas jadwal</li>
+                        <li>✓ Fleksibel & Intensif</li>
                     </ul>
-                    <a href="#registration" class="btn btn-program">Daftar Program Ini</a>
-                </div>
-
-                <!-- Kelas Privat -->
-                <div class="program-card premium">
-                    <div class="badge premium-badge">Premium</div>
-                    <div class="program-icon"></div>Profesional</h3>
-                    <p class="program-age">Semua Usia</p>
-                    <p class="program-description">
-                        Program Profesional one-on-one dengan pelatih profesional untuk pembelajaran yang lebih 
-                        personal dan hasil maksimal.
-                    </p>
-                    <div class="program-details">
-                        <div class="detail-item">
-                            <strong> Jadwal:</strong>
-                            <span>Fleksibel (sesuai kesepakatan)</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Durasi:</strong>
-                            <span>60-90 menit per sesi</span>
-                        </div>
-                        <div class="detail-item">
-                            <strong> Harga:</strong>
-                            <span class="price">Rp.350.000/8x pertemuan</span>
-                        </div>
-                    </div>
-                    <ul class="program-features">
-                        <li>  Pembelajaran 1-on-1</li>
-                        <li>  Program disesuaikan kebutuhan</li>
-                        <li>  Progress tracking detail</li>
-                        <li>  Prioritas jadwal</li>
-                    </ul>
-                    <a href="#registration" class="btn btn-program">Daftar Program Ini</a>
+                    <a href="#registration" class="btn-program">Daftar Sekarang</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Facilities Section -->
-    <section class="facilities" id="facilities">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Fasilitas <span class="highlight">Terbaik</span></h2>
-                <p class="section-subtitle">Kami menyediakan fasilitas lengkap untuk kenyamanan Anda</p>
-            </div>
-            <div class="facilities-grid">
-                <div class="facility-card">
-                    <div class="facility-icon"></div>
-                    <h3>Kolam Renang Standar</h3>
-                    <p>Kolam renang berukuran 25m x 12m dengan kedalaman bervariasi (1.2m - 2m) yang sesuai standar internasional</p>
-                </div>
-                <div class="facility-card">
-                    <div class="facility-icon"></div>
-                    <h3>Pelatih Profesional</h3>
-                    <p>Tim pelatih bersertifikat nasional dan internasional dengan pengalaman lebih dari 5 tahun</p>
-                </div>
-                <div class="facility-card">
-                    <div class="facility-icon"></div>
-                    <h3>Peralatan Latihan</h3>
-                    <p>Kickboard, pull buoy, fins, dan peralatan latihan modern untuk optimalisasi pembelajaran</p>
-                </div>
-                <div class="facility-card"
-                    <div class="facility-icon"></div>
-                    <h3>Ruang Ganti</h3>
-                    <p>Ruang ganti bersih dengan shower air hangat, locker, dan fasilitas toilet yang memadai</p>
-                </div>
-                <div class="facility-card">
-                    <div class="facility-icon"></div>
-                    <h3>Area Parkir Luas</h3>
-                    <p>Parkir mobil dan motor yang aman dengan kapasitas besar dan sistem keamanan 24 jam</p>
-                </div>
-                <div class="facility-card">
-                    <div class="facility-icon"></div>
-                    <h3>Ruang Tunggu</h3>
-                    <p>Ruang tunggu nyaman ber-AC dengan WiFi gratis untuk orang tua menunggu</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Testimoni <span class="highlight">Peserta</span></h2>
-                <p class="section-subtitle">Apa kata mereka yang telah bergabung dengan AquaLearn</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Anak saya yang awalnya takut air, sekarang sudah bisa berenang dengan percaya diri. 
-                        Pelatihnya sangat sabar dan metode pembelajarannya sangat bagus!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">BP</div>
-                        <div class="author-info">
-                            <div class="author-name">Budi Prasetyo</div>
-                            <div class="author-role">Orang tua peserta kelas anak</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Program remaja di AquaLearn sangat membantu saya meningkatkan teknik renang. 
-                        Sekarang saya sudah bisa 4 gaya dan siap ikut kompetisi!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SA</div>
-                        <div class="author-info">
-                            <div class="author-name">Siti Aminah</div>
-                            <div class="author-role">Peserta kelas remaja</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Di usia 35 tahun, saya akhirnya bisa berenang! Pelatih privat sangat memahami kebutuhan 
-                        saya dan membuat saya nyaman belajar. Highly recommended!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">RH</div>
-                        <div class="author-info">
-                            <div class="author-name">Rina Hartati</div>
-                            <div class="author-role">Peserta kelas dewasa</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Fasilitas kolam renangnya bersih dan terawat. Pelatihnya profesional dan ramah. 
-                        Anak saya sangat senang ikut les di sini!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">DW</div>
-                        <div class="author-info">
-                            <div class="author-name">Dian Wulandari</div>
-                            <div class="author-role">Orang tua peserta</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Kelas privat memberikan perhatian penuh. Dalam 2 bulan saya sudah mahir renang gaya bebas 
-                        dan gaya punggung. Worth it banget!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AP</div>
-                        <div class="author-info">
-                            <div class="author-name">Agus Purnomo</div>
-                            <div class="author-role">Peserta kelas privat</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating"></div>
-                    <p class="testimonial-text">
-                        "Jadwalnya fleksibel, cocok untuk saya yang sibuk kerja. Fasilitasnya lengkap dan bersih. 
-                        Pelayanannya juga sangat memuaskan!"
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MF</div>
-                        <div class="author-info">
-                            <div class="author-name">Maya Fitriani</div>
-                            <div class="author-role">Peserta kelas dewasa</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Registration Form Section -->
+    <!-- Registration Section -->
     <section class="registration" id="registration">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Daftar <span class="highlight">Kelas Renang</span></h2>
-                <p class="section-subtitle">Isi formulir di bawah untuk mendaftar program les renang</p>
-            </div>
-            <div class="registration-wrapper">
-                <?php if (!empty($errors)): ?>
-                    <div class="alert alert-error" style="background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
-                        <strong> Terjadi Kesalahan:</strong>
-                        <ul style="margin: 10px 0 0 20px;">
-                            <?php foreach ($errors as $error): ?>
-                                <li><?php echo htmlspecialchars($error); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
+            <div class="registration-grid">
+                <!-- Form Section -->
+                <div class="form-section">
+                    <div class="form-header">
+                        <h2 class="form-title">Paket Berenang</h2>
+                        <p class="form-subtitle">Isi formulir di bawah untuk mendaftar program renang</p>
                     </div>
-                <?php endif; ?>
-                
-                <form method="POST" action="" class="registration-form">
-                    <div class="form-row">
+                    
+                    <?php if (!empty($errors)): ?>
+                        <div class="alert-error">
+                            <strong>⚠️ Terjadi kesalahan:</strong>
+                            <ul>
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?php echo htmlspecialchars($error); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <form method="POST" action="#registration" class="registration-form">
                         <div class="form-group">
                             <label for="full_name">Nama Lengkap <span class="required">*</span></label>
                             <input 
                                 type="text" 
                                 id="full_name" 
                                 name="full_name" 
-                                class="form-input"
+                                class="form-input" 
                                 placeholder="Masukkan nama lengkap"
                                 value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : (isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''); ?>"
                                 required
                             >
                         </div>
-
-                        <div class="form-group">
-                            <label for="age">Umur <span class="required">*</span></label>
-                            <input 
-                                type="number" 
-                                id="age" 
-                                name="age" 
-                                class="form-input"
-                                placeholder="Masukkan umur"
-                                min="4"
-                                max="100"
-                                value="<?php echo isset($_POST['age']) ? htmlspecialchars($_POST['age']) : ''; ?>"
-                                required
-                            >
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Umur <span class="required">*</span></label>
+                                <input 
+                                    type="number" 
+                                    id="age" 
+                                    name="age" 
+                                    class="form-input" 
+                                    placeholder="Umur"
+                                    min="4" 
+                                    max="100"
+                                    value="<?php echo isset($_POST['age']) ? htmlspecialchars($_POST['age']) : ''; ?>"
+                                    required
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Jenis Kelamin <span class="required">*</span></label>
+                                <select id="gender" name="gender" class="form-input" required>
+                                    <option value="">Pilih</option>
+                                    <option value="Laki-laki" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
+                                    <option value="Perempuan" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-row">
+                        
                         <div class="form-group">
-                            <label for="gender">Jenis Kelamin <span class="required">*</span></label>
-                            <select id="gender" name="gender" class="form-input" required>
-                                <option value="">Pilih jenis kelamin</option>
-                                <option value="Laki-laki" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
-                                <option value="Perempuan" <?php echo (isset($_POST['gender']) && $_POST['gender'] == 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="whatsapp">Nomor WhatsApp <span class="required">*</span></label>
+                            <label for="whatsapp">No. WhatsApp <span class="required">*</span></label>
                             <input 
                                 type="tel" 
                                 id="whatsapp" 
                                 name="whatsapp" 
-                                class="form-input"
-                                placeholder="08xxxxxxxxxx"
-                                pattern="[0-9]{10,13}"
+                                class="form-input" 
+                                placeholder="08123456789"
                                 value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>"
                                 required
                             >
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Alamat <span class="required">*</span></label>
-                        <textarea 
-                            id="address" 
-                            name="address" 
-                            class="form-input"
-                            placeholder="Masukkan alamat lengkap"
-                            rows="3"
-                            required
-                        ><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
-                    </div>
-
-                    <div class="form-row">
+                        
                         <div class="form-group">
-                            <label for="program">Pilihan Program <span class="required">*</span></label>
+                            <label for="address">Alamat <span class="required">*</span></label>
+                            <textarea 
+                                id="address" 
+                                name="address" 
+                                class="form-input" 
+                                rows="3"
+                                placeholder="Masukkan alamat lengkap"
+                                required
+                            ><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="program">Program <span class="required">*</span></label>
                             <select id="program" name="program" class="form-input" required>
-                                <option value="">Pilih program</option>
-                                <option value="Kelas Anak-anak" <?php echo (isset($_POST['program']) && $_POST['program'] == 'Kelas Anak-anak') ? 'selected' : ''; ?>>Kelas Anak-anak (4-12 tahun)</option>
-                                <option value="Kelas Remaja" <?php echo (isset($_POST['program']) && $_POST['program'] == 'Kelas Remaja') ? 'selected' : ''; ?>>Kelas Remaja (13-18 tahun)</option>
-                                <option value="Kelas Dewasa" <?php echo (isset($_POST['program']) && $_POST['program'] == 'Kelas Dewasa') ? 'selected' : ''; ?>>Kelas Dewasa (18+ tahun)</option>
-                                <option value="Kelas Privat" <?php echo (isset($_POST['program']) && $_POST['program'] == 'Kelas Privat') ? 'selected' : ''; ?>>Kelas Privat (Semua usia)</option>
+                                <option value="">Pilih Program</option>
+                                <option value="Kelas Pemula" <?php echo (isset($_POST['program']) && $_POST['program'] === 'Kelas Pemula') ? 'selected' : ''; ?>>Kelas Pemula</option>
+                                <option value="Kelas Recovery" <?php echo (isset($_POST['program']) && $_POST['program'] === 'Kelas Recovery') ? 'selected' : ''; ?>>Kelas Recovery</option>
+                                <option value="Kelas Profesional" <?php echo (isset($_POST['program']) && $_POST['program'] === 'Kelas Profesional') ? 'selected' : ''; ?>>Kelas Profesional</option>
                             </select>
                         </div>
-
+                        
                         <div class="form-group">
-                            <label for="schedule">Pilihan Jadwal <span class="required">*</span></label>
+                            <label for="schedule">Jadwal <span class="required">*</span></label>
                             <select id="schedule" name="schedule" class="form-input" required>
-                                <option value="">Pilih jadwal</option>
-                                <option value="Pagi (06:00 - 08:00)" <?php echo (isset($_POST['schedule']) && $_POST['schedule'] == 'Pagi (06:00 - 08:00)') ? 'selected' : ''; ?>>Pagi (06:00 - 08:00)</option>
-                                <option value="Siang (15:00 - 17:00)" <?php echo (isset($_POST['schedule']) && $_POST['schedule'] == 'Siang (15:00 - 17:00)') ? 'selected' : ''; ?>>Siang (15:00 - 17:00)</option>
-                                <option value="Sore (17:00 - 19:00)" <?php echo (isset($_POST['schedule']) && $_POST['schedule'] == 'Sore (17:00 - 19:00)') ? 'selected' : ''; ?>>Sore (17:00 - 19:00)</option>
+                                <option value="">Pilih Jadwal</option>
+                                <option value="Jumat, siang (14:00 - 16:00)" <?php echo (isset($_POST['schedule']) && $_POST['schedule'] === 'Jumat, siang (14:00 - 16:00)') ? 'selected' : ''; ?>>Jumat, siang (14:00 - 16:00)</option>
+                                <option value="Minggu, pagi (08:00 - 10:00)" <?php echo (isset($_POST['schedule']) && $_POST['schedule'] === 'Minggu, pagi (08:00 - 10:00)') ? 'selected' : ''; ?>>Minggu, pagi (08:00 - 10:00)</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-submit">
-                             Kirim Pendaftaran
+                        
+                        <button type="submit" class="btn-submit">
+                            Daftar Sekarang →
                         </button>
-                        <button type="reset" class="btn btn-reset">Reset Form</button>
-                    </div>
-                </form>
-
-                <div class="registration-info">
+                    </form>
+                </div>
+                
+                <!-- Info Section -->
+                <div class="info-section">
                     <div class="info-card">
-                        <h3> Informasi Pendaftaran</h3>
-                        <ul>
-                            <li>  Pendaftaran dapat dilakukan secara online</li>
-                            <li>  Kami akan menghubungi Anda via WhatsApp dalam 1x24 jam</li>
-                            <li>  Biaya pendaftaran Rp 100.000 (sekali bayar)</li>
-                            <li>  RINCIAN BIAYA dapat dilakukan via transfer atau tunai</li>
-                            <li>  Sertakan foto KTP/Kartu Pelajar saat konfirmasi</li>
+                        <h3>💰 Harga Paket</h3>
+                        <ul class="price-list">
+                            <li>
+                                <span>Kelas Pemula</span>
+                                <strong>Rp 160.000/8x</strong>
+                            </li>
+                            <li>
+                                <span>Kelas Recovery</span>
+                                <strong>Rp 200.000/8x</strong>
+                            </li>
+                            <li>
+                                <span>Kelas Profesional</span>
+                                <strong>Rp 350.000/8x</strong>
+                            </li>
                         </ul>
                     </div>
+                    
                     <div class="info-card">
-                        <h3> Kontak Kami</h3>
-                        <p><strong>WhatsApp:</strong> +62 812-3456-7890</p>
-                        <p><strong>Email:</strong> info@aqualear.id</p>
-                        <p><strong>Alamat:</strong> Jl. Aquatic Center No. 123, Jakarta</p>
-                        <p><strong>Jam Operasional:</strong> Senin - Sabtu (06:00 - 20:00)</p>
+                        <h3>📞 Hubungi Kami</h3>
+                        <div class="contact-info">
+                            <p><strong>WhatsApp:</strong> +62 853-2080-8003</p>
+                            <p><strong>Email:</strong> info@swimpro.com</p>
+                            <p><strong>Instagram:</strong> @swimpro.id</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -689,50 +469,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <span class="logo-icon"></span>
-                        <span class="logo-text">swimming course</span>
-                    </div>
-                    <p>Lembaga kursus renang profesional untuk semua usia dengan pelatih bersertifikat dan fasilitas terbaik.</p>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="footer-title">🏊 SwimPro</h3>
+                    <p class="footer-desc">Kursus renang profesional dengan instruktur berpengalaman dan fasilitas terbaik.</p>
                 </div>
-                <div class="footer-section">
-                    <h4>Program</h4>
-                    <ul>
-                        <li><a href="#programs">Kelas Anak-anak</a></li>
-                        <li><a href="#programs">Kelas Remaja</a></li>
-                        <li><a href="#programs">Kelas Dewasa</a></li>
-                        <li><a href="#programs">Kelas Privat</a></li>
-                    </ul>
+                
+                <div class="footer-col">
+                    <h4 class="footer-heading">Training Center</h4>
+                    <p class="footer-text">
+                        Jl. Renang Indah No. 123<br>
+                        Jakarta Selatan, 12345<br>
+                        Indonesia
+                    </p>
                 </div>
-                <div class="footer-section">
-                    <h4>Informasi</h4>
-                    <ul>
-                        <li><a href="#about">Tentang Kami</a></li>
-                        <li><a href="#facilities">Fasilitas</a></li>
-                        <li><a href="#testimonials">Testimoni</a></li>
-                        <li><a href="#registration">Pendaftaran</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Hubungi Kami</h4>
-                    <p> Jl. Aquatic Center No. 123, Jakarta</p>
-                    <p> +62 812-3456-7890</p>
-                    <p> info@aqualear.id</p>
+                
+                <div class="footer-col">
+                    <h4 class="footer-heading">Contact</h4>
+                    <p class="footer-text">
+                        Email: info@swimpro.com<br>
+                        Phone: +62 853-2080-8003<br>
+                        WhatsApp: +62 853-2080-8003
+                    </p>
                 </div>
             </div>
+            
             <div class="footer-bottom">
-                <p>&copy; 2026 AquaLearn. All Rights Reserved.</p>
+                <p>&copy; 2025 SwimPro. All Rights Reserved.</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Notification Toast -->
-    <div id="notification" class="notification"></div>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top"></button>
-    
+    <script src="js/landing-complete.js"></script>
 </body>
 </html>

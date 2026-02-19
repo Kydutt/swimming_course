@@ -12,16 +12,16 @@ if (!isset($_GET['id'])) {
 }
 
 $id = $_GET['id'];
-$registration = get_registration_by_id($id);
+$pendaftaran = ambil_pendaftaran_by_id($id);
 
-if (!$registration) {
+if (!$pendaftaran) {
     header('Location: admin_dashboard.php');
     exit;
 }
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $update_data = [
+    $data_perbarui = [
         'full_name' => $_POST['full_name'],
         'age' => $_POST['age'],
         'gender' => $_POST['gender'],
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'notes' => $_POST['notes']
     ];
     
-    if (update_registration($id, $update_data)) {
+    if (perbarui_pendaftaran($id, $data_perbarui)) {
         header('Location: admin_dashboard.php?success=updated');
         exit;
     }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="text" 
                             id="full_name" 
                             name="full_name" 
-                            value="<?php echo htmlspecialchars($registration['full_name']); ?>"
+                            value="<?php echo htmlspecialchars($pendaftaran['full_name']); ?>"
                             required
                         >
                     </div>
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="number" 
                             id="age" 
                             name="age" 
-                            value="<?php echo $registration['age']; ?>"
+                            value="<?php echo $pendaftaran['age']; ?>"
                             min="4" 
                             max="100"
                             required
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="gender">Jenis Kelamin <span class="required">*</span></label>
                         <select id="gender" name="gender" required>
-                            <option value="Laki-laki" <?php echo $registration['gender'] === 'Laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
-                            <option value="Perempuan" <?php echo $registration['gender'] === 'Perempuan' ? 'selected' : ''; ?>>Perempuan</option>
+                            <option value="Laki-laki" <?php echo $pendaftaran['gender'] === 'Laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
+                            <option value="Perempuan" <?php echo $pendaftaran['gender'] === 'Perempuan' ? 'selected' : ''; ?>>Perempuan</option>
                         </select>
                     </div>
 
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             type="tel" 
                             id="whatsapp" 
                             name="whatsapp" 
-                            value="<?php echo $registration['whatsapp']; ?>"
+                            value="<?php echo $pendaftaran['whatsapp']; ?>"
                             required
                         >
                     </div>
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="address" 
                         rows="3"
                         required
-                    ><?php echo htmlspecialchars($registration['address']); ?></textarea>
+                    ><?php echo htmlspecialchars($pendaftaran['address']); ?></textarea>
                 </div>
 
                 <div class="form-row">
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="notes" 
                         rows="3"
                         placeholder="Catatan tambahan (opsional)"
-                    ><?php echo htmlspecialchars($registration['notes'] ?? ''); ?></textarea>
+                    ><?php echo htmlspecialchars($pendaftaran['notes'] ?? ''); ?></textarea>
                 </div>
 
                 <div class="actions">
