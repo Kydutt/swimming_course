@@ -140,6 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php require_once 'sections/footer.php'; ?>
 
+     <?php require_once 'sections/biodata.php'; ?>
+
+
 
     <script src="js/landing-complete.js"></script>
     <script src="assets/js/landing-complete.js"></script>
