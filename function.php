@@ -1,7 +1,6 @@
 <?php
 
-include __DIR__ . '/config/conn.php';
-
+include 'config/conn.php';
 // ============= Fungsi-Fungsi Pembantu =============
 
 function bersihkan_input($data) {
@@ -95,35 +94,6 @@ function perbarui_pendaftaran($id_peserta, $data) {
 function hapus_pendaftaran($id_peserta) {
     global $conn;
     $id_peserta = bersihkan_input($id_peserta);
-
-    $conn->query("CREATE TABLE IF NOT EXISTS `arsip_peserta` (
-        `id_arsip`        INT AUTO_INCREMENT PRIMARY KEY,
-        `id_peserta_asli` INT NOT NULL,
-        `full_name`       VARCHAR(150) NOT NULL,
-        `age`             INT DEFAULT NULL,
-        `gender`          VARCHAR(20) DEFAULT NULL,
-        `whatsapp`        VARCHAR(30) DEFAULT NULL,
-        `address`         TEXT DEFAULT NULL,
-        `program`         VARCHAR(100) DEFAULT NULL,
-        `schedule`        VARCHAR(150) DEFAULT NULL,
-        `harga`           DECIMAL(12,0) DEFAULT 0,
-        `status`          VARCHAR(30) DEFAULT 'Pending',
-        `notes`           TEXT DEFAULT NULL,
-        `created_at`      DATETIME DEFAULT NULL,
-        `archived_at`     DATETIME DEFAULT NOW()
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-
-    $conn->query("
-        INSERT INTO arsip_peserta
-            (id_peserta_asli, full_name, age, gender, whatsapp, address,
-             program, schedule, harga, status, notes, created_at)
-        SELECT
-            p.id_peserta, p.full_name, p.age, p.gender, p.whatsapp, p.address,
-            p.program, p.schedule, 0, p.status, p.notes, p.created_at
-        FROM peserta p
-        WHERE p.id_peserta = '$id_peserta'
-    ");
-
     return $conn->query("DELETE FROM peserta WHERE id_peserta = '$id_peserta'");
 }
 
