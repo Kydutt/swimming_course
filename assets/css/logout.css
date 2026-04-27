@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --grad: linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
+    --font: 'Inter', system-ui, sans-serif;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--grad);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.bg-bubble {
+    position: fixed;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    animation: floatUp 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.bg-bubble:nth-child(1) {
+    width: 320px;
+    height: 320px;
+    top: -80px;
+    left: -80px;
+    animation-delay: 0s;
+}
+
+.bg-bubble:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    bottom: -60px;
+    right: -40px;
+    animation-delay: 2s;
+}
+
+.bg-bubble:nth-child(3) {
+    width: 140px;
+    height: 140px;
+    top: 40%;
+    left: 5%;
+    animation-delay: 4s;
+}
+
+.bg-bubble:nth-child(4) {
+    width: 90px;
+    height: 90px;
+    top: 20%;
+    right: 10%;
+    animation-delay: 1.5s;
+}
+
+@keyframes floatUp {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.card {
+    position: relative;
+    background: rgba(255, 255, 255, .97);
+    border-radius: 28px;
+    padding: 52px 48px;
+    text-align: center;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, .25);
+    animation: cardIn .55s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.logout-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin: 0 auto 24px;
+    animation: iconBounce .8s cubic-bezier(.4, 0, .2, 1) .3s both;
+}
+
+@keyframes iconBounce {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.logout-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+    letter-spacing: -.4px;
+}
+
+.logout-name {
+    color: #2563eb;
+}
+
+.logout-sub {
+    font-size: .92rem;
+    color: #64748b;
+    margin-bottom: 36px;
+    line-height: 1.7;
+}
+
+.countdown-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 28px;
+}
+
+.countdown-ring {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 6;
+}
+
+.ring-progress {
+    fill: none;
+    stroke: url(#ringGrad);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset .95s linear;
+}
+
+.countdown-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e40af;
+}
+
+.countdown-label {
+    font-size: .8rem;
+    color: #94a3b8;
+    margin-bottom: 28px;
+    letter-spacing: .3px;
+}
+
+.btn-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: .95rem;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    margin-bottom: 12px;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(37, 99, 235, .4);
+}
+
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 20px;
+    background: #f1f5f9;
+    color: #334155;
+    border: none;
+    border-radius: 14px;
+    font-size: .9rem;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+}
+
+.btn-login:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.redirect-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1e40af, #0891b2);
+    border-radius: 0 0 0 28px;
+    width: 100%;
+    transform-origin: left;
+    animation: shrinkBar 3s linear forwards .1s;
+}
+
+@keyframes shrinkBar {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 40px 24px;
+        margin: 16px;
+    }
+}
