@@ -82,17 +82,8 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
         <div class="brand-inner">
             <div class="brand-logo">
                 <div class="logo-box"><?= icon('swim', 32) ?></div>
-                <div class="logo-box" style="display:flex;align-items:center;justify-content:center;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12h20"></path>
-                        <path d="M20 12c-2 0-3-2-5-2s-3 2-5 2-3-2-5-2-3 2-5 2"></path>
-                        <circle cx="12" cy="6" r="2"></circle>
-                        <path d="M8 9l2-2 4 2"></path>
-                    </svg>
-                </div>
                 <span class="logo-text">Swimming Course</span>
             </div>
-            <h1 class="brand-heading">Selamat Datang<br>di Swimming Course <span style="display:inline-block;vertical-align:middle;margin-left:8px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#60a5fa;"><path d="M2 12h20"></path><path d="M20 12c-2 0-3-2-5-2s-3 2-5 2-3-2-5-2-3 2-5 2"></path></svg></span></h1>
             <h1 class="brand-heading">Selamat Datang<br>di Swimming Course <?= icon('wave', 40, 'inline-icon') ?></h1>
             <p class="brand-desc">Platform manajemen kursus renang modern. Kelola peserta, jadwal, dan program dengan mudah dari satu dashboard.</p>
             <div class="brand-stats">
