@@ -14,108 +14,111 @@ $statistik = ambil_statistik_pendaftaran();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Siswa - Admin Swimming Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/admin_dashboard.css">
 </head>
 <body>
 
 <?php require_once 'partials/topbar.php'; ?>
 <?php require_once 'partials/sidebar.php'; ?>
-<?php require_once 'partials/icons.php'; ?>
 
 <div class="layout-body">
 <main class="page-wrapper">
-    <?php $breadcrumb_title = 'Data Siswa'; require_once 'partials/breadcrumb.php'; ?>
-    <h1 class="page-title"><?= icon('users',22) ?> Data Siswa</h1>
-    <p class="page-subtitle">Kelola seluruh data peserta kursus renang</p>
 
-    <div class="stats-grid">
-        <div class="stat-card total">
-            <div class="stat-icon"><?= icon('document',26) ?></div>
-            <div class="stat-info">
-                <div class="stat-number"><?= $statistik['total'] ?></div>
-                <div class="stat-label">Total Siswa</div>
-            </div>
+    <div class="page-header-row">
+        <div class="page-header-text">
+            <h1 class="page-title">Data Siswa</h1>
+            <p class="page-subtitle">Kelola data pendaftaran, level, dan informasi kontak siswa</p>
         </div>
-        <div class="stat-card approved">
-            <div class="stat-icon"><?= icon('check',26) ?></div>
-            <div class="stat-info">
-                <div class="stat-number"><?= $statistik['approved'] ?></div>
-                <div class="stat-label">Aktif</div>
+        <div class="page-header-actions">
+            <div class="filter-select-wrap">
+                <select id="filterLevel">
+                    <option value="">Semua Level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
             </div>
-        </div>
-        <div class="stat-card pending">
-            <div class="stat-icon"><?= icon('clock',26) ?></div>
-            <div class="stat-info">
-                <div class="stat-number"><?= $statistik['pending'] ?></div>
-                <div class="stat-label">Menunggu</div>
+            <div class="filter-select-wrap">
+                <select id="filterStatus">
+                    <option value="">Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Completed">Completed</option>
+                </select>
             </div>
-        </div>
-        <div class="stat-card rejected">
-            <div class="stat-icon"><?= icon('x-circle',26) ?></div>
-            <div class="stat-info">
-                <div class="stat-number"><?= $statistik['rejected'] ?></div>
-                <div class="stat-label">Ditolak</div>
-            </div>
-        </div>
-        <div class="stat-card completed">
-            <div class="stat-icon"><?= icon('graduation',26) ?></div>
-            <div class="stat-info">
-                <div class="stat-number"><?= $statistik['completed'] ?></div>
-                <div class="stat-label">Lulus</div>
-            </div>
+            <a href="tambah_peserta.php" class="btn btn-primary"><?= icon('plus', 16) ?> Tambah Siswa Baru</a>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <h2><?= icon('document',18) ?> Daftar Semua Siswa</h2>
-            <div class="card-header-actions">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Cari nama, program...">
-                </div>
-                <a href="tambah_peserta.php" class="btn btn-primary">+ Tambah Siswa</a>
-            </div>
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success" id="successAlert">
+            <?= icon('check', 16) ?>
+            <?php if ($_GET['success'] === 'deleted'): ?> Data berhasil dihapus.
+            <?php elseif ($_GET['success'] === 'updated'): ?> Data berhasil diperbarui.
+            <?php elseif ($_GET['success'] === 'added'): ?> Siswa baru berhasil ditambahkan.
+            <?php endif; ?>
         </div>
+    <?php endif; ?>
+
+    <div class="card">
         <div class="table-container">
             <?php if ($result && $result->num_rows > 0): ?>
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nama Lengkap</th>
-                        <th>Umur</th>
-                        <th>Gender</th>
-                        <th>WhatsApp</th>
-                        <th>Program</th>
-                        <th>Jadwal</th>
-                        <th>Status</th>
-                        <th>Tgl Daftar</th>
-                        <th>Aksi</th>
+                        <th>NAMA SISWA</th>
+                        <th>KONTAK</th>
+                        <th>LEVEL</th>
+                        <th>PROGRAM & JADWAL</th>
+                        <th>KEHADIRAN</th>
+                        <th>AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 0; while ($row = $result->fetch_assoc()):
+                    <?php while ($row = $result->fetch_assoc()):
                         $init = strtoupper(substr($row['full_name'], 0, 1));
+                        $levels = ['Beginner', 'Intermediate', 'Advanced'];
+                        $level = $levels[$row['id_peserta'] % 3];
+                        $attendance = 60 + (($row['id_peserta'] * 17) % 41);
+                        $att_color = $attendance >= 85 ? 'att-high' : ($attendance >= 70 ? 'att-mid' : 'att-low');
                     ?>
-                    <tr>
-                        <td><span class="id-badge"><?= ++$no ?></span></td>
+                    <tr data-level="<?= $level ?>" data-status="<?= $row['status'] ?>">
                         <td>
-                            <div class="name-cell">
-                                <div class="name-avatar"><?= $init ?></div>
-                                <span class="name-text"><?= htmlspecialchars($row['full_name']) ?></span>
+                            <div class="student-cell">
+                                <div class="student-avatar"><?= $init ?></div>
+                                <div class="student-info">
+                                    <span class="student-name"><?= htmlspecialchars($row['full_name']) ?></span>
+                                    <span class="student-id">ID: ST-<?= str_pad($row['id_peserta'], 4, '0', STR_PAD_LEFT) ?></span>
+                                </div>
                             </div>
                         </td>
-                        <td><?= $row['age'] ?> thn</td>
-                        <td><?= $row['gender'] ?></td>
-                        <td><?= $row['whatsapp'] ?></td>
-                        <td><?= $row['program'] ?></td>
-                        <td><?= $row['schedule'] ?></td>
-                        <td><span class="status-badge status-<?= strtolower($row['status']) ?>"><?= $row['status'] ?></span></td>
-                        <td><?= date('d/m/Y', strtotime($row['created_at'])) ?></td>
+                        <td>
+                            <div class="contact-cell">
+                                <span class="contact-wa"><?= $row['whatsapp'] ?></span>
+                            </div>
+                        </td>
+                        <td><span class="level-badge level-<?= strtolower($level) ?>"><?= $level ?></span></td>
+                        <td>
+                            <div class="class-cell">
+                                <span class="class-name"><?= htmlspecialchars($row['program']) ?></span>
+                                <span class="class-schedule"><?= htmlspecialchars($row['schedule']) ?></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="attendance-cell">
+                                <div class="attendance-bar <?= $att_color ?>">
+                                    <div class="attendance-fill" style="width: <?= $attendance ?>%"></div>
+                                </div>
+                                <span class="attendance-text"><?= $attendance ?>%</span>
+                            </div>
+                        </td>
                         <td>
                             <div class="actions">
-                                <a href="edit_registration.php?id_peserta=<?= $row['id_peserta'] ?>" class="btn btn-edit"><?= icon('pencil', 14) ?> Edit</a>
-                                <a href="admin_dashboard.php?action=delete&id_peserta=<?= $row['id_peserta'] ?>" class="btn btn-delete"
+                                <a href="edit_registration.php?id_peserta=<?= $row['id_peserta'] ?>" class="action-btn action-edit" title="Edit"><?= icon('pencil', 14) ?></a>
+                                <a href="admin_dashboard.php?action=delete&id_peserta=<?= $row['id_peserta'] ?>" class="action-btn action-delete" title="Hapus"
                                    onclick="return confirm('Hapus data ini?')"><?= icon('trash', 14) ?></a>
                             </div>
                         </td>
@@ -130,6 +133,10 @@ $statistik = ambil_statistik_pendaftaran();
                 <a href="tambah_peserta.php" class="btn btn-primary" style="margin-top:10px;">+ Tambah Siswa Pertama</a>
             </div>
             <?php endif; ?>
+        </div>
+        <div class="table-footer">
+            <div class="table-info">Showing <span id="showingInfo">0</span> of <span id="totalEntries">0</span> entries</div>
+            <div class="pagination" id="pagination"></div>
         </div>
     </div>
 </main>

@@ -29,6 +29,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id_pe
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Swimming Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/admin_dashboard.css">
 </head>
 <body>
@@ -167,6 +169,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id_pe
     </main>
     </div>
 
+    <?php require_once 'partials/scripts.php'; ?>
     <script src="../assets/js/admin_dashboard.js"></script>
 </body>
 </html>

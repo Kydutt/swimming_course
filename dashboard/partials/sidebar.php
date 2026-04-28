@@ -1,18 +1,19 @@
 <?php
-
-// Partial: sidebar admin
-// $current_page harus didefinisikan sebelum include
 require_once __DIR__ . '/icons.php';
 $current_page = $current_page ?? '';
 ?>
 <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">SC</div>
+        <div class="sidebar-brand-info">
+            <span class="sidebar-brand-name">Swimming Course</span>
+            <span class="sidebar-brand-role">Facility Admin</span>
+        </div>
+    </div>
+
     <nav class="sidebar-nav">
-        <div class="sidebar-section-label">MENU UTAMA</div>
         <a href="data_siswa.php" class="sidebar-link <?= $current_page === 'data_siswa' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('users', 18) ?></span><span>Data Siswa</span>
-        </a>
-
-        <div class="sidebar-section-label">SISTEM</div>
         </a>
         <a href="data_instruktur.php" class="sidebar-link <?= $current_page === 'data_instruktur' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('swim', 18) ?></span><span>Data Instruktur</span>
@@ -20,8 +21,6 @@ $current_page = $current_page ?? '';
         <a href="data_kelas.php" class="sidebar-link <?= $current_page === 'data_kelas' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('book', 18) ?></span><span>Data Kelas</span>
         </a>
-
-        <div class="sidebar-section-label">OPERASIONAL</div>
         <a href="tambah_peserta.php" class="sidebar-link <?= $current_page === 'pendaftaran' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('clipboard', 18) ?></span><span>Pendaftaran</span>
         </a>
@@ -31,8 +30,6 @@ $current_page = $current_page ?? '';
         <a href="pembayaran.php" class="sidebar-link <?= $current_page === 'pembayaran' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('credit-card', 18) ?></span><span>Pembayaran</span>
         </a>
-
-        <div class="sidebar-section-label">SISTEM</div>
         <a href="laporan.php" class="sidebar-link <?= $current_page === 'laporan' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('chart-bar', 18) ?></span><span>Laporan</span>
         </a>
@@ -42,8 +39,8 @@ $current_page = $current_page ?? '';
     </nav>
 
     <div class="sidebar-footer">
-        <a href="../proses/logout.php" class="sidebar-logout">
-            <span><?= icon('logout', 18) ?></span><span>Logout</span>
+        <a href="data_kelas.php" class="sidebar-cta-btn">
+            <?= icon('plus', 16) ?> Tambah Program
         </a>
     </div>
 </aside>
