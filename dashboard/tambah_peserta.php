@@ -58,7 +58,6 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Peserta - Admin Swimming Course</title>
-<<<<<<< HEAD
     <link rel="stylesheet" href="../css/admin_dashboard.css">
     <style>
         
@@ -256,10 +255,6 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
             .form-card-header { padding: 22px 20px; }
         }
     </style>
-=======
-    <link rel="stylesheet" href="../assets/css/admin_dashboard.css">
-    <link rel="stylesheet" href="../assets/css/tambah_peserta.css">
->>>>>>> 658b3ae8dfc1f178ded7dc61b43108045607f608
 </head>
 <body>
 <?php require_once 'partials/topbar.php'; ?>
@@ -407,7 +402,6 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
 </div>
 
 <?php require_once 'partials/scripts.php'; ?>
-<<<<<<< HEAD
 <script>
     function selectStatus(val) {
         document.getElementById('statusInput').value = val;
@@ -421,8 +415,5 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
         if (pill.textContent.trim().includes(curStatus)) pill.classList.add('selected');
     });
 </script>
-=======
-<script src="../assets/js/tambah_peserta.js"></script>
->>>>>>> 658b3ae8dfc1f178ded7dc61b43108045607f608
 </body>
 </html>
