@@ -134,14 +134,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php require_once 'sections/features.php'; ?>
 
+    <?php require_once 'sections/biodata.php'; ?>
+
     <?php require_once 'sections/programs.php'; ?>
 
     <?php require_once 'sections/registration.php'; ?>
 
     <?php require_once 'sections/footer.php'; ?>
 
-     <?php require_once 'sections/biodata.php'; ?>
-
+    
 
 
     <script src="js/landing-complete.js"></script>
