@@ -25,6 +25,10 @@ while ($fb = $feedback_result->fetch_assoc()) {
     $feedback_list[] = $fb;
 }
 
+// Ambil instruktur aktif pertama untuk section biodata
+$instruktur_result = ambil_semua_instruktur();
+$instruktur_data   = $instruktur_result ? $instruktur_result->fetch_assoc() : null;
+
 // Flash message dari proses feedback
 $feedback_flash      = '';
 $feedback_flash_type = '';

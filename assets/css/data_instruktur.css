@@ -1,20 +1,306 @@
 /* ============================================
-   data_instruktur.css — Coming Soon Page
+   data_instruktur.css — Halaman Data Instruktur
    ============================================ */
 
-.coming-soon-wrap {
-    display:flex; flex-direction:column; align-items:center;
-    justify-content:center; padding:80px 20px; text-align:center;
+/* ── Layout ── */
+.di-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
-.cs-icon { font-size:5rem; margin-bottom:20px; animation:floatIcon 3s ease-in-out infinite; }
-@keyframes floatIcon {
-    0%,100% { transform:translateY(0); }
-    50%      { transform:translateY(-10px); }
+
+@media (min-width: 900px) {
+    .di-layout {
+        grid-template-columns: 1fr 380px;
+        align-items: start;
+    }
 }
-.cs-title { font-size:1.6rem; font-weight:800; color:#0f172a; margin-bottom:10px; }
-.cs-desc  { color:#64748b; font-size:.95rem; max-width:400px; line-height:1.7; margin-bottom:28px; }
-.cs-badge {
-    display:inline-flex; align-items:center; gap:8px;
-    background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;
-    border-radius:50px; padding:8px 20px; font-size:.85rem; font-weight:700;
+
+/* ── Alert Flash ── */
+.di-alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+/* ── Tabel Avatar Foto ── */
+.di-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.di-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.di-avatar-initial {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.di-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.di-age {
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+
+.row-nonaktif {
+    opacity: 0.6;
+}
+
+/* Status dot */
+.status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+.dot-active   { background: #10b981; }
+.dot-inactive { background: #94a3b8; }
+
+/* ── Panel Form ── */
+.di-panel {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    overflow: hidden;
+}
+
+.di-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+    color: #fff;
+}
+
+.di-panel-icon {
+    display: flex;
+    align-items: center;
+    opacity: 0.9;
+}
+
+.di-panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+.di-panel-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ── Errors ── */
+.di-errors {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    color: #dc2626;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.di-errors ul {
+    margin: 4px 0 0 0;
+    padding-left: 16px;
+    width: 100%;
+}
+
+/* ── Foto Upload ── */
+.di-foto-upload {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.di-foto-preview {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e2e8f0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    transition: border-color 0.2s;
+}
+
+.di-foto-preview:hover {
+    border-color: #93c5fd;
+}
+
+.di-foto-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.di-foto-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #94a3b8;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.di-foto-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.di-foto-hint {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* ── Form Fields ── */
+.di-fg {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.di-fg label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.di-req { color: #ef4444; }
+
+.di-fg input,
+.di-fg select,
+.di-fg textarea {
+    padding: 9px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: #0f172a;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    resize: vertical;
+}
+
+.di-fg input:focus,
+.di-fg select:focus,
+.di-fg textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+}
+
+.di-fg-hint {
+    font-size: 0.74rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.di-fg-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Toggle switch */
+.toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-track {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.toggle-track::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+
+.toggle-switch input:checked + .toggle-track {
+    background: #22c55e;
+}
+
+.toggle-switch input:checked + .toggle-track::before {
+    transform: translateX(18px);
 }
