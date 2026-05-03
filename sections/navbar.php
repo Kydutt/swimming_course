@@ -14,7 +14,7 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#features" class="nav-link">Features</a></li>
-                <li><a href="#registration" class="nav-link">Contact</a></li>
+                <li><a href="#footer" class="nav-link">Contact</a></li>
                 
                 <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true): ?>
                     <li><span class="nav-link">Hai, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span></li>

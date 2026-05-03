@@ -67,11 +67,13 @@ if (isset($_POST['register'])) {
     <div class="form-panel" style="border-right: 1px solid var(--gray-100);">
         <div class="form-inner">
 
-            <span class="form-badge"><?= icon('swim', 14) ?> Swimming Course</span>
-            <span class="form-badge" style="display:inline-flex;align-items:center;gap:6px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M20 12c-2 0-3-2-5-2s-3 2-5 2-3-2-5-2-3 2-5 2"></path><circle cx="12" cy="6" r="2"></circle><path d="M8 9l2-2 4 2"></path></svg>
+            
+            <div class="form-badge" style="display:inline-flex;align-items:center;gap:6px;">
+                <div class="logo-box" style="display:flex;align-items:center;justify-content:center;">
+                    <?= icon('swim', 18) ?>
+                </div>
                 Swimming Course
-            </span>
+            </div>
             <h2 class="form-title">Buat Akun</h2>
             <p class="form-sub">Bergabung dan mulai perjalanan renangmu!</p>
 
@@ -179,26 +181,21 @@ if (isset($_POST['register'])) {
 
         <div class="brand-inner">
             <div class="brand-logo">
-                <div class="logo-box"><?= icon('swim', 32) ?></div>
                 <div class="logo-box" style="display:flex;align-items:center;justify-content:center;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M20 12c-2 0-3-2-5-2s-3 2-5 2-3-2-5-2-3 2-5 2"></path><circle cx="12" cy="6" r="2"></circle><path d="M8 9l2-2 4 2"></path></svg>
+                    <?= icon('swim', 32) ?>
                 </div>
                 <span class="logo-text">Swimming Course</span>
             </div>
-            <h1 class="brand-heading">Mulai<br>Perjalananmu<br>Bersama Kami <span style="display:inline-block;vertical-align:middle;margin-left:8px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#60a5fa;"><path d="M2 12h20"></path><path d="M20 12c-2 0-3-2-5-2s-3 2-5 2-3-2-5-2-3 2-5 2"></path></svg></span></h1>
+            
             <h1 class="brand-heading">Mulai<br>Perjalananmu<br>Bersama Kami <?= icon('wave', 40, 'inline-icon') ?></h1>
             <p class="brand-desc">Daftarkan dirimu dan nikmati program renang berkualitas bersama instruktur berpengalaman.</p>
             <div class="brand-stats">
                 <div class="stat"><span class="n"><?= icon('check', 16) ?></span><span class="l">Gratis Daftar</span></div>
                 <div class="stat"><span class="n">3</span><span class="l">Kelas</span></div>
                 <div class="stat"><span class="n"><?= icon('lightning', 16) ?></span><span class="l">Langsung Aktif</span></div>
-                <div class="stat"><span class="n"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #22c55e;"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="l">Gratis Daftar</span></div>
-                <div class="stat"><span class="n">3</span><span class="l">Kelas</span></div>
-                <div class="stat"><span class="n"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #eab308;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span><span class="l">Langsung Aktif</span></div>
             </div>
         </div>
     </div>
-
 </div>
 
 <script>

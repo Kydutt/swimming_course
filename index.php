@@ -144,6 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php require_once 'sections/registration.php'; ?>
 
+    <?php require_once 'sections/testimonial.php'; ?>
+
     <?php require_once 'sections/footer.php'; ?>
 
     

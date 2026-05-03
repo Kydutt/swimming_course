@@ -82,7 +82,7 @@
             }
 
             function showFlash(msg, type) {
-                flash.textContent = msg;
+                flash.innerHTML = msg;
                 flash.className   = 'fb-flash fb-flash-' + type;
                 flash.style.display = 'block';
                 setTimeout(() => {
