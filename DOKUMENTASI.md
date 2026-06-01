@@ -31,11 +31,11 @@ Aplikasi ini menggunakan struktur PHP Native dengan pemisahan folder yang jelas 
 - `dashboard/` - Halaman khusus admin yang diproteksi `session`. Digunakan untuk meninjau `data_siswa`, mengubah (`edit_registration.php`), atau menambah peserta (`tambah_peserta.php`). Bagian header/sidebar dirangkum dalam folder `partials/`.
 - `database/` - Direktori inersia tempat melampirkan file skema `.sql` instalasi basis data awal.
 - `js/` - Memuat skrip sisi-klien JavaScript untuk interaktivitas elemen dinamis (*mis.* animasi hero, pengalih input, dsb), utamanya via `landing-complete.js`.
-- `proses/` - Berfungsi memuat rute dan logika *backend* esensial untuk autentikasi seperti `login.php`, `register.php`, dan `logout.php`.
+- `proses/` - Berfunction memuat rute dan logika *backend* esensial untuk autentikasi seperti `login.php`, `register.php`, dan `logout.php`.
 - `sections/` - Komponen modular pembentuk *Landing Page* (meliputi elemen navigasi, fitur pilihan, rincian program harga, form pendaftaran umum, dan footer).
 - File Skrip Dasar (*Root File*):
   - `index.php`: Halaman muka beranda bagi tamu publik yang dirajut dengan melakukan *require* pada komponen-komponen `sections/`.
-  - `function.php`: Kumpulan fungsi fundamental utilitas sebagai perantara aplikasi dengan antarmuka basis data (pengambilan daftar peserta, penambahan registrasi, penanganan keamanan kueri, dsb).
+  - `function.php`: Kumpulan function fundamental utilitas sebagai perantara aplikasi dengan antarmuka basis data (pengambilan daftar peserta, penambahan registrasi, penanganan keamanan kueri, dsb).
 Sistem ini adalah aplikasi manajemen administrasi **Swimming Course (Kursus Renang)** yang melayani dua entitas utama:
 - **Pengunjung / User**: Dapat melihat informasi profil, jadwal, program kursus, dan melakukan registrasi secara online.
 - **Admin**: Memiliki Dashboard khusus untuk memanajemen data mentah seperti Pendaftaran Siswa, Pembayaran, Jadwal Latihan, Master Data Kelas (Program), dan Laporan Keuangan.
@@ -68,7 +68,7 @@ Aplikasi memisahkan antarmuka Admin dengan panel navigasi yang *sticky* dan dile
 
 ### **Optimasi UI dan Kode:**
 - **Pemisahan Logika & Tampilan (CSS/JS Eksternal)**: Menghindari penggunaan *inline CSS* maupun `<style>` HTML di dalam file. Semua instruktur styling dipindah ke direktori `assets/css/` dan logika dinamis interaktif ke `assets/js/`. Hal ini menciptakan struktur *Clean Code* yang ringan didownload oleh *browser*.
-- **Ikon Berbasis SVG**: Membuang pemusatan penggunaan *emoji* bawaan sistem menjadi grafik berbasis SVG via fungsi PHP `icon('name', size)` di `function.php`, menghasilkan resolusi grafis yang konsisten pada semua browser dan sistem operasi.
+- **Ikon Berbasis SVG**: Membuang pemusatan penggunaan *emoji* bawaan sistem menjadi grafik berbasis SVG via function PHP `icon('name', size)` di `function.php`, menghasilkan resolusi grafis yang konsisten pada semua browser dan sistem operasi.
 
 ---
 
@@ -121,7 +121,7 @@ Dasar pengerjaan dan pertukaran informasi pada sistem menumpu pada model basis d
 - `password` *(Varchar 255-karakter, merangkum sidik komputasi kata sandi terselubung)*
 - `role` *(Peran terstruktur `enum` membagi porsi tampilan antara hak otoriter berstatus `user` dan `admin`)*
 
-*(Catatan: Aplikasi ini juga mengelaborasi data lain sesuai fungsinya seperti daftar detail partisipasi, penetapan nilai tagihan program per pilihan kelas (*tabel programs/jadwal*), yang dikoordinasi melingkar bersama fail `function.php`)*.
+*(Catatan: Aplikasi ini juga mengelaborasi data lain sesuai functionnya seperti daftar detail partisipasi, penetapan nilai tagihan program per pilihan kelas (*tabel programs/jadwal*), yang dikoordinasi melingkar bersama fail `function.php`)*.
 ### 1. Tabel: `user`
 Tabel untuk mengatur kredensial login.
 - `id` (INT) PK
@@ -185,7 +185,7 @@ swimming_course/
 ├── sections/                 # Modul-modul UI Landing Page terpisah
 │   ├── hero.php, programs.php, navbar.php, dll.
 │
-├── function.php              # Kumpulan logika database Helper & SVG Renderer
+├──function.php              # Kumpulan logika database Helper & SVG Renderer
 ├── index.php                 # Halaman Landing Page Utama
 ├── login.php                 # Form Login
 ├── register.php              # Form Registrasi Baru
@@ -220,5 +220,5 @@ swimming_course/
        exit; 
    }
    ```
-3. **Pemberantasan Inject (XSS & SQLi):** Seluruh parameter PHP mengandalkan `$stmt->prepare()` *(Prepared Statement)* dari *MySQLi* saat insersi data, serta mensterilkan penampakan nilai kembali dengan fungsi `htmlspecialchars()` pada input nama dan string lainnya.
-4. **Modul Modular:** Penggunakan sintaksis pemanggilan parameter dan tag *UI Elements PHP* diformalkan via fungsi di `function.php`, mengurangi redundansi deklarativ penulisan tag HTML ganda.
+3. **Pemberantasan Inject (XSS & SQLi):** Seluruh parameter PHP mengandalkan `$stmt->prepare()` *(Prepared Statement)* dari *MySQLi* saat insersi data, serta mensterilkan penampakan nilai kembali dengan function `htmlspecialchars()` pada input nama dan string lainnya.
+4. **Modul Modular:** Penggunakan sintaksis pemanggilan parameter dan tag *UI Elements PHP* diformalkan via function di `function.php`, mengurangi redundansi deklarativ penulisan tag HTML ganda.

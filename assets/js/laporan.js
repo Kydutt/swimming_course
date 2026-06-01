@@ -1,4 +1,4 @@
-// laporan.js
+﻿// laporan.js
 
 // ── Count-up animation for stat numbers ──
 document.querySelectorAll('.stat-number').forEach(el => {
@@ -27,14 +27,14 @@ if (si) si.addEventListener('input', function () {
 document.addEventListener('DOMContentLoaded', function () {
     if (typeof Chart === 'undefined' || typeof window.laporanData === 'undefined') return;
 
-    const d            = window.laporanData;
-    const gridColor    = 'rgba(226,232,240,0.6)';
-    const colorBlue    = '#2563eb';
-    const colorTeal    = '#0891b2';
-    const colorGreen   = '#10b981';
+    const d = window.laporanData;
+    const gridColor = 'rgba(226,232,240,0.6)';
+    const colorBlue = '#2563eb';
+    const colorTeal = '#0891b2';
+    const colorGreen = '#10b981';
 
     Chart.defaults.font.family = "'Inter', sans-serif";
-    Chart.defaults.color       = '#64748b';
+    Chart.defaults.color = '#64748b';
 
     // ── 1. Line: Perkembangan Peserta per Bulan ──
     new Chart(document.getElementById('chartPesertaBulan'), {
@@ -56,9 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { callbacks: {
-                label: ctx => ` ${ctx.raw} pendaftar`
-            }}},
+            plugins: {
+                legend: { display: false }, tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.raw} pendaftar`
+                    }
+                }
+            },
             scales: {
                 y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: gridColor } },
                 x: { grid: { display: false } }
@@ -70,10 +74,10 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('chartStatusPeserta'), {
         type: 'doughnut',
         data: {
-            labels: ['Pending','Approved','Completed','Rejected'],
+            labels: ['Menunggu', 'Disetujui', 'Selesai', 'Ditolak'],
             datasets: [{
                 data: d.statusData,
-                backgroundColor: ['#f59e0b','#10b981','#2563eb','#ef4444'],
+                backgroundColor: ['#f59e0b', '#10b981', '#2563eb', '#ef4444'],
                 borderWidth: 2,
                 borderColor: '#ffffff'
             }]
@@ -106,13 +110,19 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { callbacks: {
-                label: ctx => ` Rp ${ctx.raw.toLocaleString('id-ID')}`
-            }}},
+            plugins: {
+                legend: { display: false }, tooltip: {
+                    callbacks: {
+                        label: ctx => ` Rp ${ctx.raw.toLocaleString('id-ID')}`
+                    }
+                }
+            },
             scales: {
-                y: { beginAtZero: true, grid: { color: gridColor }, ticks: {
-                    callback: v => 'Rp ' + (v >= 1000000 ? (v/1000000).toFixed(1)+'jt' : v.toLocaleString('id-ID'))
-                }},
+                y: {
+                    beginAtZero: true, grid: { color: gridColor }, ticks: {
+                        callback: v => 'Rp ' + (v >= 1000000 ? (v / 1000000).toFixed(1) + 'jt' : v.toLocaleString('id-ID'))
+                    }
+                },
                 x: { grid: { display: false } }
             }
         }
@@ -150,17 +160,21 @@ document.addEventListener('DOMContentLoaded', function () {
             responsive: true, maintainAspectRatio: false,
             plugins: {
                 legend: { position: 'bottom', labels: { padding: 14, font: { size: 11 } } },
-                tooltip: { callbacks: {
-                    label: ctx => ctx.datasetIndex === 0
-                        ? ` ${ctx.raw} peserta`
-                        : ` Rp ${ctx.raw.toLocaleString('id-ID')}`
-                }}
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.datasetIndex === 0
+                            ? ` ${ctx.raw} peserta`
+                            : ` Rp ${ctx.raw.toLocaleString('id-ID')}`
+                    }
+                }
             },
             scales: {
-                yLeft:  { beginAtZero: true, position: 'left',  ticks: { stepSize: 1 }, grid: { color: gridColor } },
-                yRight: { beginAtZero: true, position: 'right', grid: { display: false }, ticks: {
-                    callback: v => 'Rp ' + (v >= 1000000 ? (v/1000000).toFixed(1)+'jt' : v.toLocaleString('id-ID'))
-                }},
+                yLeft: { beginAtZero: true, position: 'left', ticks: { stepSize: 1 }, grid: { color: gridColor } },
+                yRight: {
+                    beginAtZero: true, position: 'right', grid: { display: false }, ticks: {
+                        callback: v => 'Rp ' + (v >= 1000000 ? (v / 1000000).toFixed(1) + 'jt' : v.toLocaleString('id-ID'))
+                    }
+                },
                 x: { grid: { display: false } }
             }
         }

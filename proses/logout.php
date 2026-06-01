@@ -33,7 +33,7 @@ session_destroy();
     <div class="card" id="card">
         <div class="redirect-bar"></div>
 
-        <div class="logout-icon"><?= icon('wave', 40) ?></div>
+        <div class="logout-icon"><?= icon('swim', 40) ?></div>
 
         <h1 class="logout-title">
             Sampai jumpa,<br>

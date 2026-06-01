@@ -81,7 +81,7 @@
                 });
             }
 
-            function showFlash(msg, type) {
+           function showFlash(msg, type) {
                 flash.innerHTML = msg;
                 flash.className   = 'fb-flash fb-flash-' + type;
                 flash.style.display = 'block';
@@ -97,7 +97,7 @@
                 }, 4000);
             }
 
-            function buildCard(data) {
+           function buildCard(data) {
                 let stars = '';
                 const svgStar = `<?= icon('star', 18) ?>`;
                 for (let i = 1; i <= 5; i++) {

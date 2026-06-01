@@ -13,15 +13,15 @@ if (flash) {
 }
 
 // ── Auto-fill keterangan from hari + waktu ──
-const hariSel  = document.querySelector('[name="hari"]');
-const wMulai   = document.querySelector('[name="waktu_mulai"]');
+const hariSel = document.querySelector('[name="hari"]');
+const wMulai = document.querySelector('[name="waktu_mulai"]');
 const wSelesai = document.querySelector('[name="waktu_selesai"]');
 const ketInput = document.querySelector('[name="keterangan"]');
 
 function autoKet() {
     if (!ketInput || ketInput.value.trim()) return;
-    const h  = hariSel  ? hariSel.value  : '';
-    const wm = wMulai   ? wMulai.value   : '';
+    const h = hariSel ? hariSel.value : '';
+    const wm = wMulai ? wMulai.value : '';
     const ws = wSelesai ? wSelesai.value : '';
     if (h && wm && ws) ketInput.placeholder = `${h}, ${wm} – ${ws}`;
 }

@@ -25,9 +25,15 @@ while ($fb = $feedback_result->fetch_assoc()) {
     $feedback_list[] = $fb;
 }
 
-// Ambil instruktur aktif pertama untuk section biodata
+// Ambil semua instruktur untuk slider biodata
 $instruktur_result = ambil_semua_instruktur();
-$instruktur_data   = $instruktur_result ? $instruktur_result->fetch_assoc() : null;
+$instruktur_list   = [];
+if ($instruktur_result) {
+    while ($row = $instruktur_result->fetch_assoc()) {
+        $instruktur_list[] = $row;
+    }
+}
+$instruktur_data = $instruktur_list[0] ?? null; // backward compat
 
 // Flash message dari proses feedback
 $feedback_flash      = '';

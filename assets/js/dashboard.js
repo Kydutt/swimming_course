@@ -3,10 +3,10 @@
    ============================================ */
 
 const hamburger = document.getElementById('hamburgerBtn');
-const sidebar   = document.getElementById('sidebar');
-const overlay   = document.getElementById('sidebarOverlay');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
 
-function openSidebar()  { sidebar.classList.add('open');    overlay.classList.add('show'); }
+function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
 function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
 
 if (hamburger) hamburger.addEventListener('click', () =>

@@ -4,11 +4,14 @@ $current_page = $current_page ?? '';
 ?>
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <div class="sidebar-brand-icon">SC</div>
-        <div class="sidebar-brand-info">
-            <span class="sidebar-brand-name">Swimming Course</span>
-            <span class="sidebar-brand-role">Facility Admin</span>
-        </div>
+        <a href="../index.php" class="sidebar-brand-link">
+            <img src="../assets/img/logo.png" alt="Logo"
+                 class="sidebar-brand-logo">
+            <div class="sidebar-brand-info">
+                <span class="sidebar-brand-name">Swimming Course</span>
+                <span class="sidebar-brand-role">Admin Panel</span>
+            </div>
+        </a>
     </div>
 
     <nav class="sidebar-nav">
@@ -20,9 +23,6 @@ $current_page = $current_page ?? '';
         </a>
         <a href="data_kelas.php" class="sidebar-link <?= $current_page === 'data_kelas' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('book', 18) ?></span><span>Data Kelas</span>
-        </a>
-        <a href="tambah_peserta.php" class="sidebar-link <?= $current_page === 'pendaftaran' ? 'active' : '' ?>">
-            <span class="sidebar-icon"><?= icon('clipboard', 18) ?></span><span>Pendaftaran</span>
         </a>
         <a href="jadwal_latihan.php" class="sidebar-link <?= $current_page === 'jadwal' ? 'active' : '' ?>">
             <span class="sidebar-icon"><?= icon('calendar', 18) ?></span><span>Jadwal Latihan</span>

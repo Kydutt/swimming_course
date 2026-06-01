@@ -6,7 +6,7 @@ $error_message = '';
 
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
     if ($_SESSION['role'] == 'admin') {
-        header('Location: ../dashboard/admin_dashboard.php');
+        header('Location: ../dashboard/data_siswa.php');
     } else {
         header('Location: ../index.php');
     }
@@ -187,7 +187,7 @@ if (isset($_POST['register'])) {
                 <span class="logo-text">Swimming Course</span>
             </div>
             
-            <h1 class="brand-heading">Mulai<br>Perjalananmu<br>Bersama Kami <?= icon('wave', 40, 'inline-icon') ?></h1>
+            <h1 class="brand-heading">Mulai<br>Perjalananmu<br>Bersama Kami <?= icon('swim', 40, 'inline-icon') ?></h1>
             <p class="brand-desc">Daftarkan dirimu dan nikmati program renang berkualitas bersama instruktur berpengalaman.</p>
             <div class="brand-stats">
                 <div class="stat"><span class="n"><?= icon('check', 16) ?></span><span class="l">Gratis Daftar</span></div>
@@ -201,7 +201,7 @@ if (isset($_POST['register'])) {
 <script>
     const root = document.getElementById('pageRoot');
 
-    function navigateWithAnim(url) {
+   function navigateWithAnim(url) {
         root.classList.add('exiting');
         setTimeout(() => { window.location.href = url; }, 400);
     }
@@ -213,7 +213,7 @@ if (isset($_POST['register'])) {
         });
     });
 
-    function toggleEye(fieldId, btn) {
+   function toggleEye(fieldId, btn) {
         const f = document.getElementById(fieldId);
         f.type = f.type === 'password' ? 'text' : 'password';
         const svgEye = `<?= icon('eye', 18) ?>`;
@@ -222,7 +222,7 @@ if (isset($_POST['register'])) {
         btn.innerHTML = f.type === 'password' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
     }
 
-    function checkStrength(val) {
+   function checkStrength(val) {
         const fill = document.getElementById('strengthFill');
         const text = document.getElementById('strengthText');
         if (!val) { fill.style.width = '0%'; text.textContent = ''; return; }
@@ -245,12 +245,12 @@ if (isset($_POST['register'])) {
         text.style.color = lv.c;
     }
 
-    function checkMatch(el) {
+   function checkMatch(el) {
         const match = el.value === document.getElementById('password').value;
         el.style.borderColor = el.value ? (match ? '#22c55e' : '#ef4444') : '';
     }
 
-    document.getElementById('registerForm').addEventListener('submit', function () {
+    document.getElementById('registerForm').addEventListener('submit',function () {
         const btn = document.getElementById('regBtn');
 
         btn.style.pointerEvents = 'none';

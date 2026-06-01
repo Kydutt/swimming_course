@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_logged_in']) || $_SESSION['role'] !== 'admin') { header('Location: ../proses/login.php'); exit; }
 require_once '../function.php';
@@ -27,10 +27,10 @@ $total_semua  = 0;
 
 while ($row = $result->fetch_assoc()) {
     $row['harga'] = (int)$row['harga'];
-    $row['is_lunas'] = in_array($row['status'], ['Approved', 'Completed']);
+    $row['is_lunas'] = in_array($row['status'], ['Disetujui', 'Selesai']);
 
     // Rejected tidak dihitung dalam angka keuangan apapun
-    if ($row['status'] === 'Rejected') {
+    if ($row['status'] === 'Ditolak') {
         $row['harga'] = 0; // sembunyikan harga untuk Rejected
     } elseif ($row['is_lunas']) {
         $total_lunas += $row['harga'];
@@ -127,8 +127,8 @@ $total_belum = $total_semua - $total_lunas;
                         <td><?= htmlspecialchars($p['program']) ?></td>
                         <td><?= htmlspecialchars($p['schedule']) ?></td>
                         <td>
-                            <?php if ($p['status'] === 'Rejected'): ?>
-                                <span style="font-size:.75rem; color:#dc2626; font-weight:600; background:#fee2e2; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><?= icon('x-circle', 12) ?> Ditolak Admin</span>
+                            <?php if ($p['status'] === 'Ditolak'): ?>
+                                <span style="font-size:.75rem; color:#dc2626; font-weight:600; background:#fee2e2; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><?= icon('x-circle', 12) ?> Ditolak</span>
                             <?php elseif ($p['harga'] > 0): ?>
                                 <strong style="color:#0f172a;">Rp <?= number_format($p['harga'], 0, ',', '.') ?></strong>
                             <?php else: ?>
@@ -143,7 +143,7 @@ $total_belum = $total_semua - $total_lunas;
                         <td>
                             <?php if ($p['is_lunas']): ?>
                                 <span class="status-badge status-approved"><?= icon('check', 14) ?> Lunas</span>
-                            <?php elseif ($p['status'] === 'Rejected'): ?>
+                            <?php elseif ($p['status'] === 'Ditolak'): ?>
                                 <span class="status-badge status-rejected"><?= icon('x-circle', 14) ?> Batal</span>
                             <?php else: ?>
                                 <span class="status-badge status-pending">Belum Bayar</span>
@@ -157,7 +157,7 @@ $total_belum = $total_semua - $total_lunas;
                 <tfoot>
                     <tr style="background:#f8fafc; font-weight:700;">
                         <td colspan="4" style="padding:14px 16px; color:#334155;">
-                            Total Pendapatan (Approved/Completed)
+                            Total Pendapatan (Disetujui/Selesai)
                         </td>
                         <td style="padding:14px 16px; color:#065f46; font-size:1rem;">
                             Rp <?= number_format($total_lunas, 0, ',', '.') ?>

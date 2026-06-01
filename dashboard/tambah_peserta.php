@@ -18,7 +18,7 @@ $v = [
     'address'   => '',
     'program'   => '',
     'schedule'  => '',
-    'status'    => 'Pending',
+    'status'    => 'Menunggu',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $insert_id = simpan_pendaftaran($v);
         if ($insert_id) {
-            header('Location: admin_dashboard.php?success=added'); exit;
+            header('Location: data_siswa.php?success=added'); exit;
         } else {
             $errors[] = 'Gagal menyimpan data ke database.';
         }
@@ -69,7 +69,7 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
 <main class="page-wrapper">
 
     <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; font-size:.85rem; color:#94a3b8;">
-        <a href="admin_dashboard.php" style="color:#2563eb; text-decoration:none; font-weight:600;">Dashboard</a>
+        <a href="data_siswa.php" style="color:#2563eb; text-decoration:none; font-weight:600;"><?= icon('users', 14) ?> Data Siswa</a>
         <span>›</span>
         <span style="color:#334155; font-weight:600;">Tambah Peserta</span>
     </div>
@@ -172,10 +172,10 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
                         <div class="status-preview">
                             <?php
                             $pills = [
-                                'Pending'   => ['pill-pending',   icon('clock', 14)],
-                                'Approved'  => ['pill-approved',  icon('check', 14)],
-                                'Rejected'  => ['pill-rejected',  icon('x-circle', 14)],
-                                'Completed' => ['pill-completed', icon('graduation', 14)],
+                                'Menunggu'  => ['pill-menunggu',  icon('clock', 14)],
+                                'Disetujui' => ['pill-disetujui', icon('check', 14)],
+                                'Ditolak'   => ['pill-ditolak',   icon('x-circle', 14)],
+                                'Selesai'   => ['pill-selesai',   icon('graduation', 14)],
                             ];
                             foreach ($pills as $st => [$cls, $icon]):
                                 $sel = $v['status'] === $st ? 'selected' : '';
@@ -189,7 +189,7 @@ while ($j = $jadwal_result->fetch_assoc()) { $jadwals[] = $j; }
                     </div>
 
                     <div class="form-actions">
-                            <a href="admin_dashboard.php" class="btn-cancel-form"><?= icon('x-circle', 16) ?> Batal</a>
+                            <a href="data_siswa.php" class="btn-cancel-form"><?= icon('x-circle', 16) ?> Batal</a>
                         <button type="submit" class="btn-save">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>

@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 
-include 'config/conn.php';
-// ============= Fungsi-Fungsi Pembantu =============
+include 'config/koneksi.php';
+// ============= function-function Pembantu =============
 
 function bersihkan_input($data) {
     global $conn;
@@ -52,8 +52,8 @@ function simpan_pendaftaran($data) {
         $id_jadwal = $row_jdw['id_jadwal'];
     }
     
-    $sql = "INSERT INTO peserta (full_name, age, gender, whatsapp, address, program, schedule, id_program, id_jadwal) 
-            VALUES ('$full_name', '$age', '$gender', '$whatsapp', '$address', '$program', '$schedule', $id_program, $id_jadwal)";
+    $sql = "INSERT INTO peserta (full_name, age, gender, whatsapp, address, program, schedule, id_program, id_jadwal, level, kehadiran) 
+            VALUES ('$full_name', '$age', '$gender', '$whatsapp', '$address', '$program', '$schedule', $id_program, $id_jadwal, 'Beginner', 0)";
     
     if ($conn->query($sql)) {
         return $conn->insert_id;
@@ -72,8 +72,11 @@ function perbarui_pendaftaran($id_peserta, $data) {
     $address   = bersihkan_input($data['address']);
     $program   = bersihkan_input($data['program']);
     $schedule  = bersihkan_input($data['schedule']);
-    $status    = isset($data['status']) ? bersihkan_input($data['status']) : 'Pending';
+    $status    = isset($data['status']) ? bersihkan_input($data['status']) : 'Menunggu';
     $notes     = isset($data['notes']) ? bersihkan_input($data['notes']) : '';
+    $level     = isset($data['level']) && in_array($data['level'], ['Pemula','Menengah','Mahir'])
+                 ? $data['level'] : 'Pemula';
+    $kehadiran = isset($data['kehadiran']) ? max(0, min(100, (int)$data['kehadiran'])) : 0;
     
     $sql = "UPDATE peserta SET 
             full_name = '$full_name',
@@ -84,13 +87,24 @@ function perbarui_pendaftaran($id_peserta, $data) {
             program = '$program',
             schedule = '$schedule',
             status = '$status',
-            notes = '$notes'
+            notes = '$notes',
+            level = '$level',
+            kehadiran = $kehadiran
             WHERE id_peserta = '$id_peserta'";
     
     return $conn->query($sql);
 }
 
-// Fungsi untuk menghapus pendaftaran
+// function khusus update level dan kehadiran saja
+function perbarui_level_kehadiran($id_peserta, $level, $kehadiran) {
+    global $conn;
+    $id_peserta = (int)$id_peserta;
+    $level = in_array($level, ['Pemula','Menengah','Mahir']) ? $level : 'Pemula';
+    $kehadiran  = max(0, min(100, (int)$kehadiran));
+    return $conn->query("UPDATE peserta SET level='$level', kehadiran=$kehadiran WHERE id_peserta=$id_peserta");
+}
+
+// function untuk menghapus pendaftaran
 function hapus_pendaftaran($id_peserta) {
     global $conn;
     $id_peserta = bersihkan_input($id_peserta);
@@ -115,13 +129,16 @@ function ambil_statistik_pendaftaran() {
     $row = $result->fetch_assoc();
     $statistik['total'] = $row['total'];
 
-    $statistik['pending']   = hitung_pendaftaran_by_status('Pending');
+    $statistik['menunggu']   = hitung_pendaftaran_by_status('Menunggu');
+    $statistik['disetujui']  = hitung_pendaftaran_by_status('Disetujui');
+    $statistik['ditolak']    = hitung_pendaftaran_by_status('Ditolak');
+    $statistik['selesai']    = hitung_pendaftaran_by_status('Selesai');
 
-    $statistik['approved']  = hitung_pendaftaran_by_status('Approved');
-
-    $statistik['rejected']  = hitung_pendaftaran_by_status('Rejected');
-
-    $statistik['completed'] = hitung_pendaftaran_by_status('Completed');
+    // Alias lama agar tidak ada yang broken
+    $statistik['Menunggu']    = $statistik['menunggu'];
+    $statistik['Disetujui']   = $statistik['disetujui'];
+    $statistik['Ditolak']   = $statistik['ditolak'];
+    $statistik['Selesai']  = $statistik['selesai'];
     
     return $statistik;
 }
@@ -196,7 +213,7 @@ function toggle_jadwal($id) {
     return $conn->query("UPDATE jadwal SET is_active = IF(is_active=1,0,1) WHERE id_jadwal=$id");
 }
 
-// ============= Fungsi Program CRUD =============
+// ============= function Program CRUD =============
 
 // Tambah program baru
 function tambah_program($nama, $harga, $jumlah_pertemuan, $deskripsi) {
@@ -255,7 +272,7 @@ function ambil_semua_jadwal_admin() {
 }
 
 
-// ============= Fungsi Feedback / Testimoni =============
+// ============= function Feedback / Testimoni =============
 
 // Simpan feedback baru
 function simpan_feedback($id_user, $rating, $komentar) {
@@ -300,7 +317,7 @@ function ambil_feedback_approved($limit = 6) {
     return $conn->query($sql);
 }
 
-// ============= Fungsi Instruktur / Pelatih =============
+// ============= function Instruktur / Pelatih =============
 
 function ambil_semua_instruktur() {
     global $conn;
@@ -387,7 +404,7 @@ function toggle_instruktur($id) {
     return $conn->query("UPDATE instruktur SET is_active = IF(is_active=1,0,1) WHERE id_instruktur = $id");
 }
 
-// ============= Fungsi SVG / Icons =============
+// ============= function SVG / Icons =============
 function icon(string $name, int $size = 20, string $cls = ''): string {
     $paths = [
         // Navigation & UI

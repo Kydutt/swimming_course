@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true || $_SESSION['role'] !== 'admin') {
     header('Location: ../proses/login.php');
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'schedule'  => $_POST['schedule']  ?? '',
         'status'    => $_POST['status']    ?? 'Menunggu',
         'notes'     => $_POST['notes']     ?? '',
-        'level'     => $_POST['level']     ?? 'Beginner',
+        'level'     => $_POST['level']     ?? 'Pemula',
         'kehadiran' => $_POST['kehadiran'] ?? 0,
     ];
 
@@ -195,10 +195,10 @@ $jadwal_result   = ambil_semua_jadwal();
                         <div class="status-preview">
                             <?php
                             $pills = [
-                                'Menunggu'   => ['pill-pending',   icon('clock', 14)],
-                                'Disetujui'  => ['pill-approved',  icon('check', 14)],
-                                'Ditolak'  => ['pill-rejected',  icon('x-circle', 14)],
-                                'Selesai' => ['pill-completed', icon('graduation', 14)],
+                                'Menunggu'  => ['pill-menunggu',  icon('clock', 14)],
+                                'Disetujui' => ['pill-disetujui', icon('check', 14)],
+                                'Ditolak'   => ['pill-ditolak',   icon('x-circle', 14)],
+                                'Selesai'   => ['pill-selesai',   icon('graduation', 14)],
                             ];
                             foreach ($pills as $st => [$cls, $icn]):
                                 $sel = ($pendaftaran['status'] === $st) ? 'selected' : '';

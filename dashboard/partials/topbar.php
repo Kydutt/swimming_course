@@ -8,18 +8,15 @@ $initial    = strtoupper(substr($admin_name, 0, 1));
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
-        <span class="topbar-title">Swimming Course</span>
     </div>
-    <div class="topbar-search">
-        <?= icon('search', 16) ?>
-        <input type="text" id="globalSearch" placeholder="Search students...">
-    </div>
+
     <div class="topbar-right">
         <a href="../index.php" class="topbar-icon-btn" title="Beranda"><?= icon('home', 18) ?></a>
         <button class="topbar-icon-btn" title="Notifikasi"><?= icon('bell', 18) ?></button>
         <button class="topbar-icon-btn" title="Bantuan"><?= icon('help-circle', 18) ?></button>
         <div class="topbar-avatar">
-            <div class="admin-avatar"><?= $initial ?></div>
+            <img src="../assets/img/logo.png" alt="Indramayu Swimming Courses"
+             style="height:45px; width:45px; object-fit:contain; border-radius:50%;">
         </div>
     </div>
 </header>

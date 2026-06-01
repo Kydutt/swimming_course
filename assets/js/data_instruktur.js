@@ -3,9 +3,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // ── Preview foto sebelum upload ──
-    const fotoInput    = document.getElementById('fotoInput');
-    const previewImg   = document.getElementById('previewImg');
-    const placeholder  = document.getElementById('fotoPlaceholder');
+    const fotoInput = document.getElementById('fotoInput');
+    const previewImg = document.getElementById('previewImg');
+    const placeholder = document.getElementById('fotoPlaceholder');
 
     if (fotoInput) {
         fotoInput.addEventListener('change', function () {

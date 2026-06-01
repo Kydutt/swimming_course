@@ -1,4 +1,4 @@
-// data_siswa.js — Search, Filter, Pagination
+// data_siswa.js — Search, Filter Level, Filter Status, Pagination
 
 (function () {
     const ROWS_PER_PAGE = 10;
@@ -17,7 +17,7 @@
     let currentPage = 1;
 
     function getVisibleRows() {
-        const q = (globalSearch ? globalSearch.value : '').toLowerCase();
+        const q = (globalSearch ? globalSearch.value : '').toLowerCase().trim();
         const level = filterLevel ? filterLevel.value : '';
         const status = filterStatus ? filterStatus.value : '';
 
@@ -46,11 +46,9 @@
         pageRows.forEach(r => r.style.display = '');
 
         if (showingInfo) {
-            if (visible.length === 0) {
-                showingInfo.textContent = '0';
-            } else {
-                showingInfo.textContent = `${start + 1} to ${Math.min(end, visible.length)}`;
-            }
+            showingInfo.textContent = visible.length === 0
+                ? '0'
+                : `${start + 1} to ${Math.min(end, visible.length)}`;
         }
         if (totalEntries) totalEntries.textContent = visible.length;
 
@@ -111,16 +109,14 @@
         return btn;
     }
 
-    // Event listeners
-    if (globalSearch) globalSearch.addEventListener('input', () => { currentPage = 1; render(); });
-    if (filterLevel) filterLevel.addEventListener('change', () => { currentPage = 1; render(); });
-    if (filterStatus) filterStatus.addEventListener('change', () => { currentPage = 1; render(); });
-
-    // Attendance bar animation
+    // Animasi attendance bar (data dari DB yang real)
     document.querySelectorAll('.attendance-fill').forEach(bar => {
-        const w = bar.style.width;
+        const targetWidth = bar.style.width;
         bar.style.width = '0%';
-        setTimeout(() => { bar.style.width = w; }, 300);
+        bar.style.transition = 'width 0.7s ease';
+        requestAnimationFrame(() => {
+            setTimeout(() => { bar.style.width = targetWidth; }, 100);
+        });
     });
 
     // Auto-dismiss alert
@@ -134,6 +130,11 @@
             setTimeout(() => successAlert.remove(), 500);
         }, 3000);
     }
+
+    // Event listeners
+    if (globalSearch) globalSearch.addEventListener('input', () => { currentPage = 1; render(); });
+    if (filterLevel) filterLevel.addEventListener('change', () => { currentPage = 1; render(); });
+    if (filterStatus) filterStatus.addEventListener('change', () => { currentPage = 1; render(); });
 
     // Initial render
     render();

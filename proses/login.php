@@ -7,7 +7,7 @@ $error_message = '';
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
 
     if ($_SESSION['role'] == 'admin') {
-        header('Location: ../dashboard/admin_dashboard.php');
+        header('Location: ../dashboard/data_siswa.php');
     } else {
         header('Location: ../index.php');
     }
@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
             $_SESSION['role'] = $user['role'];
 
             if ($user['role'] == 'admin') {
-                header('Location: ../dashboard/admin_dashboard.php');
+                header('Location: ../dashboard/data_siswa.php');
             } else {
                 header('Location: ../index.php');
             }
@@ -84,8 +84,9 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
                 <div class="logo-box"><?= icon('swim', 32) ?></div>
                 <span class="logo-text">Swimming Course</span>
             </div>
-            <h1 class="brand-heading">Selamat Datang<br>di Swimming Course <?= icon('wave', 40, 'inline-icon') ?></h1>
-            <p class="brand-desc">Platform manajemen kursus renang modern. Kelola peserta, jadwal, dan program dengan mudah dari satu dashboard.</p>
+            <h1 class="brand-heading">Selamat Datang<br>di Swimming Course <?= icon('swim', 40, 'inline-icon') ?></h1>
+            <p class="brand-desc">platform kursus renang berbasis web yang dirancang untuk memberikan kemudahan dalam proses pendaftaran,
+                                  pengelolaan jadwal, hingga administrasi kursus renang secara modern dan efisien.</p>
             <div class="brand-stats">
                 <div class="stat"><span class="n">100+</span><span class="l">Peserta</span></div>
                 <div class="stat"><span class="n">3</span><span class="l">Program</span></div>
@@ -166,7 +167,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
 
             <div class="form-footer">
                 Belum punya akun? <a href="register.php">Daftar sekarang</a><br>
-                <small>© 2026 AquaLearn Swimming Course</small>
+                <small>© 2026 Swimming Course</small>
             </div>
         </div>
     </div>
@@ -176,7 +177,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
 <script>
     const root = document.getElementById('pageRoot');
 
-    function navigateWithAnim(url) {
+   function navigateWithAnim(url) {
         root.classList.add('exiting');
         setTimeout(() => { window.location.href = url; }, 400);
     }
@@ -188,7 +189,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
         });
     });
 
-    function toggleEye(fieldId, btn) {
+   function toggleEye(fieldId, btn) {
         const f = document.getElementById(fieldId);
         f.type = f.type === 'password' ? 'text' : 'password';
         const svgEye = `<?= icon('eye', 18) ?>`;
@@ -197,7 +198,7 @@ if (isset($_GET['registered']) && $_GET['registered'] == 'success') {
         btn.innerHTML = f.type === 'password' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
+    document.getElementById('loginForm').addEventListener('submit',function (e) {
         const btn = document.getElementById('loginBtn');
 
         btn.style.pointerEvents = 'none';

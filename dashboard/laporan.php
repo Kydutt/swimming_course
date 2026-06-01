@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_logged_in']) || $_SESSION['role'] !== 'admin') { header('Location: ../proses/login.php'); exit; }
 require_once '../function.php';
@@ -12,26 +12,26 @@ $conn->set_charset('utf8mb4');
 $statistik_q = $conn->query("
     SELECT
         COUNT(*)                   AS total,
-        SUM(status='Pending')      AS pending,
-        SUM(status='Approved')     AS approved,
-        SUM(status='Completed')    AS completed,
-        SUM(status='Rejected')     AS rejected
+        SUM(status='Menunggu')      AS pending,
+        SUM(status='Disetujui')     AS approved,
+        SUM(status='Selesai')    AS completed,
+        SUM(status='Ditolak')     AS rejected
     FROM peserta
 ");
 $statistik = $statistik_q->fetch_assoc();
-foreach (['total','pending','approved','completed','rejected'] as $k) {
+foreach (['total','Menunggu','Disetujui','Selesai','Ditolak'] as $k) {
     $statistik[$k] = (int)($statistik[$k] ?? 0);
 }
 
 // ── Rekap keuangan ─────────────────────────────────────────────
 $keuangan_q = $conn->query("
     SELECT
-        COALESCE(SUM(CASE WHEN p.status <> 'Rejected' THEN COALESCE(pr.harga,0) ELSE 0 END),0)               AS total_semua,
-        COALESCE(SUM(CASE WHEN p.status IN ('Approved','Completed') THEN COALESCE(pr.harga,0) ELSE 0 END),0) AS total_masuk,
-        COALESCE(SUM(CASE WHEN p.status = 'Pending'   THEN COALESCE(pr.harga,0) ELSE 0 END),0)               AS total_pending,
-        COUNT(CASE WHEN p.status IN ('Approved','Completed') THEN 1 END) AS jml_lunas,
-        COUNT(CASE WHEN p.status = 'Pending'  THEN 1 END)                AS jml_pending,
-        COUNT(CASE WHEN p.status = 'Rejected' THEN 1 END)                AS jml_batal
+        COALESCE(SUM(CASE WHEN p.status <> 'Ditolak' THEN COALESCE(pr.harga,0) ELSE 0 END),0)               AS total_semua,
+        COALESCE(SUM(CASE WHEN p.status IN ('Disetujui','Selesai') THEN COALESCE(pr.harga,0) ELSE 0 END),0) AS total_masuk,
+        COALESCE(SUM(CASE WHEN p.status = 'Menunggu'   THEN COALESCE(pr.harga,0) ELSE 0 END),0)               AS total_pending,
+        COUNT(CASE WHEN p.status IN ('Disetujui','Selesai') THEN 1 END) AS jml_lunas,
+        COUNT(CASE WHEN p.status = 'Menunggu'  THEN 1 END)                AS jml_pending,
+        COUNT(CASE WHEN p.status = 'Ditolak' THEN 1 END)                AS jml_batal
     FROM peserta p LEFT JOIN program pr ON pr.nama_program = p.program
 ");
 $keu = $keuangan_q->fetch_assoc();
@@ -42,7 +42,7 @@ $prog_q = $conn->query("
     SELECT
         p.program,
         COUNT(*) AS jumlah,
-        COALESCE(SUM(CASE WHEN p.status IN ('Approved','Completed') THEN COALESCE(pr.harga,0) ELSE 0 END),0) AS pendapatan
+        COALESCE(SUM(CASE WHEN p.status IN ('Disetujui','Selesai') THEN COALESCE(pr.harga,0) ELSE 0 END),0) AS pendapatan
     FROM peserta p LEFT JOIN program pr ON pr.nama_program = p.program
     WHERE p.program IS NOT NULL AND p.program <> ''
     GROUP BY p.program
@@ -57,7 +57,7 @@ $bulan_q = $conn->query("
         DATE_FORMAT(tgl, '%b %Y') AS bulan,
         DATE_FORMAT(tgl, '%Y-%m') AS bulan_key,
         COUNT(*) AS jumlah,
-        COALESCE(SUM(CASE WHEN status IN ('Approved','Completed') THEN harga ELSE 0 END),0) AS pendapatan
+        COALESCE(SUM(CASE WHEN status IN ('Disetujui','Selesai') THEN harga ELSE 0 END),0) AS pendapatan
     FROM (
         SELECT p.created_at AS tgl,
                CONVERT(p.status USING utf8mb4) AS status,
@@ -95,10 +95,10 @@ $chart_prog_jumlah    = json_encode(array_map('intval', array_column($prog_data,
 $chart_prog_pendapatan = json_encode(array_map('intval', array_column($prog_data, 'pendapatan')));
 
 $chart_status_data    = json_encode([
-    $statistik['pending'],
-    $statistik['approved'],
-    $statistik['completed'],
-    $statistik['rejected'],
+    $statistik['Menunggu'],
+    $statistik['Disetujui'],
+    $statistik['Selesai'],
+    $statistik['Ditolak'],
 ]);
 ?>
 <!DOCTYPE html>
@@ -123,10 +123,10 @@ $chart_status_data    = json_encode([
     <!-- Statistik Peserta -->
     <div class="stats-grid" style="margin-bottom:28px;">
         <div class="stat-card total">   <div class="stat-icon"><?= icon('document',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['total'] ?></div><div class="stat-label">Total Peserta</div></div></div>
-        <div class="stat-card approved"><div class="stat-icon"><?= icon('check',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['approved'] ?></div><div class="stat-label">Disetujui</div></div></div>
-        <div class="stat-card pending"> <div class="stat-icon"><?= icon('clock',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['pending'] ?></div><div class="stat-label">Menunggu</div></div></div>
-        <div class="stat-card completed"><div class="stat-icon"><?= icon('graduation',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['completed'] ?></div><div class="stat-label">Selesai</div></div></div>
-        <div class="stat-card rejected"><div class="stat-icon"><?= icon('x-circle',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['rejected'] ?></div><div class="stat-label">Ditolak</div></div></div>
+        <div class="stat-card disetujui"><div class="stat-icon"><?= icon('check',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['Disetujui'] ?></div><div class="stat-label">Disetujui</div></div></div>
+        <div class="stat-card menunggu"> <div class="stat-icon"><?= icon('clock',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['Menunggu'] ?></div><div class="stat-label">Menunggu</div></div></div>
+        <div class="stat-card selesai"><div class="stat-icon"><?= icon('graduation',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['Selesai'] ?></div><div class="stat-label">Selesai</div></div></div>
+        <div class="stat-card ditolak"><div class="stat-icon"><?= icon('x-circle',26) ?></div><div class="stat-info"><div class="stat-number"><?= $statistik['Ditolak'] ?></div><div class="stat-label">Ditolak</div></div></div>
     </div>
 
     <!-- Rekap Keuangan 4 Kartu -->
@@ -135,15 +135,15 @@ $chart_status_data    = json_encode([
         <div class="keu-card masuk">
             <div class="keu-label"><?= icon('check',13) ?> Pendapatan Masuk</div>
             <div class="keu-amount">Rp <?= number_format($keu['total_masuk'],0,',','.') ?></div>
-            <div class="keu-count"><?= $keu['jml_lunas'] ?> peserta Approved/Completed</div>
+            <div class="keu-count"><?= $keu['jml_lunas'] ?> peserta Disetujui/Selesai</div>
         </div>
         <div class="keu-card pending">
-            <div class="keu-label"><?= icon('clock',13) ?> Potensi Pending</div>
+            <div class="keu-label"><?= icon('clock',13) ?> Potensi Menunggu</div>
             <div class="keu-amount">Rp <?= number_format($keu['total_pending'],0,',','.') ?></div>
             <div class="keu-count"><?= $keu['jml_pending'] ?> peserta menunggu konfirmasi</div>
         </div>
         <div class="keu-card batal">
-            <div class="keu-label"><?= icon('x-circle',13) ?> Ditolak Admin</div>
+            <div class="keu-label"><?= icon('x-circle',13) ?> Ditolak</div>
             <div class="keu-amount" style="font-size:.95rem; color:#dc2626;"><?= $keu['jml_batal'] ?> Peserta</div>
             <div class="keu-count">Tidak dihitung dalam pendapatan</div>
         </div>
@@ -151,24 +151,6 @@ $chart_status_data    = json_encode([
             <div class="keu-label"><?= icon('chart-bar',13) ?> Total Potensi Seluruh</div>
             <div class="keu-amount">Rp <?= number_format($keu['total_semua'],0,',','.') ?></div>
             <div class="keu-count">Seluruh pendaftaran aktif</div>
-        </div>
-    </div>
-
-    <!-- Income Banner -->
-    <div class="income-banner">
-        <div class="income-card ic-lunas">
-            <div class="ic-icon"><?= icon('money',32) ?></div>
-            <div>
-                <div class="ic-label">Total Pendapatan Masuk (Approved + Completed)</div>
-                <div class="ic-amount">Rp <?= number_format($keu['total_masuk'],0,',','.') ?></div>
-            </div>
-        </div>
-        <div class="income-card ic-pending">
-            <div class="ic-icon"><?= icon('clock',32) ?></div>
-            <div>
-                <div class="ic-label">Potensi Belum Dikonfirmasi (Pending)</div>
-                <div class="ic-amount">Rp <?= number_format($keu['total_pending'],0,',','.') ?></div>
-            </div>
         </div>
     </div>
 
@@ -211,7 +193,7 @@ $chart_status_data    = json_encode([
             <div class="chart-card-head">
                 <div>
                     <div class="chart-card-title"><?= icon('money', 16) ?> Pendapatan Keuangan (6 Bulan)</div>
-                    <div class="chart-card-sub">Total pendapatan masuk (Approved + Completed) per bulan</div>
+                    <div class="chart-card-sub">Total pendapatan masuk (Disetujui + Selesai) per bulan</div>
                 </div>
             </div>
             <div class="chart-wrap">
@@ -256,7 +238,7 @@ $chart_status_data    = json_encode([
                 <tbody>
                     <?php foreach ($transaksi as $t):
                         $init = strtoupper(substr($t['full_name'],0,1));
-                        $is_lunas = in_array($t['status'], ['Approved','Completed']);
+                        $is_lunas = in_array($t['status'], ['Disetujui','Selesai']);
                     ?>
                     <tr>
                         <td>
@@ -269,8 +251,8 @@ $chart_status_data    = json_encode([
                         </td>
                         <td><?= htmlspecialchars($t['program']) ?></td>
                         <td>
-                            <?php if ($t['status'] === 'Rejected'): ?>
-                                <span style="font-size:.75rem; color:#dc2626; font-weight:600; background:#fee2e2; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><?= icon('x-circle', 12) ?> Ditolak Admin</span>
+                            <?php if ($t['status'] === 'Ditolak'): ?>
+                                <span style="font-size:.75rem; color:#dc2626; font-weight:600; background:#fee2e2; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><?= icon('x-circle', 12) ?> Ditolak</span>
                             <?php elseif ((int)$t['harga'] > 0): ?>
                                 <strong style="color:<?= $is_lunas ? '#065f46' : '#0f172a' ?>">
                                     Rp <?= number_format((int)$t['harga'],0,',','.') ?>
